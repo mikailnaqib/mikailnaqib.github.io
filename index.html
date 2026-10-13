@@ -16,8 +16,9 @@
   --ink-2:#4a5664;
   --line:#c9d1da;
   --grid:rgba(22,32,44,.045);
-  --accent:#c8331f;          /* remove-before-flight red */
+  --accent:#550000;          /* deep maroon */
   --accent-ink:#ffffff;
+  --accent-on-ink:#d48a84;   /* same hue, lifted for the dark contact panel */
   --font-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
   --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
@@ -25,10 +26,10 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#0e1a2a;--sheet:#13223a;--ink:#e6edf5;--ink-2:#9fb0c4;--line:#2c4160;--grid:rgba(160,190,230,.06);
-  --accent:#ef5a43;--accent-ink:#13223a;color-scheme:dark}}
+  --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0e1a2a;--sheet:#13223a;--ink:#e6edf5;--ink-2:#9fb0c4;--line:#2c4160;--grid:rgba(160,190,230,.06);
-  --accent:#ef5a43;--accent-ink:#13223a;color-scheme:dark}
+  --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;color-scheme:dark}
 
 *{box-sizing:border-box}
 body{
@@ -117,9 +118,9 @@ h3.sub{font-size:1.3rem;text-transform:uppercase;margin-bottom:var(--s3)}
 .contact .links{display:grid;gap:var(--s2);min-width:0}
 .contact .row{display:flex;align-items:center;gap:var(--s3);font-family:var(--font-mono);font-size:.82rem;flex-wrap:wrap}
 .contact .row .k{opacity:.6;width:5.5em;text-transform:uppercase;font-size:.68rem;letter-spacing:.12em}
-.contact a{color:var(--paper);text-decoration-color:var(--accent);text-underline-offset:3px;overflow-wrap:anywhere}
+.contact a{color:var(--paper);text-decoration-color:var(--accent-on-ink);text-underline-offset:3px;overflow-wrap:anywhere}
 .copy{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--paper);border:1px solid currentColor;padding:.2em .6em;cursor:pointer;opacity:.75}
-.copy:hover{opacity:1;color:var(--accent)}
+.copy:hover{opacity:1;color:var(--accent-on-ink)}
 footer{margin-top:var(--s5);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s3)}
 
 @media (max-width:760px){
