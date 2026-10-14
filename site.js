@@ -1,5 +1,69 @@
-/* Shared by every page: the Light / System / Dark theme switch.
+/* Shared by every page: the Light / System / Dark theme switch,
+   and the "under construction" notice.
    Loaded in <head> so the saved theme applies before the page draws. */
+
+/* ===== UNDER-CONSTRUCTION NOTICE: edit the text here =====
+   Set SHOW to false to turn the notice off for everyone.
+   Change VERSION (e.g. to 2) to show it again to people who already dismissed it. */
+var CONSTRUCTION_NOTICE = {
+  SHOW: true,
+  VERSION: 1,
+  label: "Notice · Work in progress",
+  title: "Under construction",
+  text: "Forewarning: this website is still being built. Some projects are missing details and photos, and pages may change as I add more of my work.",
+  button: "Continue"
+};
+
+(function () {
+  var N = CONSTRUCTION_NOTICE, KEY = "portfolio-notice-seen", root = document.documentElement;
+  if (!N.SHOW) return;
+  var seen = null;
+  try { seen = localStorage.getItem(KEY); } catch (e) {}
+  if (seen === String(N.VERSION)) return;
+
+  root.classList.add("notice-pending");   // hides the page until the notice is up
+
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var el = document.createElement("div");
+    el.className = "notice";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-modal", "true");
+    el.setAttribute("aria-labelledby", "notice-title");
+    el.innerHTML =
+      '<div class="notice-card">' +
+        '<div class="notice-tape" aria-hidden="true"></div>' +
+        '<div class="notice-body">' +
+          '<span class="label">' + esc(N.label) + '</span>' +
+          '<h2 id="notice-title">' + esc(N.title) + '</h2>' +
+          '<p>' + esc(N.text) + '</p>' +
+          '<button type="button" class="notice-go">' + esc(N.button) +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="notice-tape" aria-hidden="true"></div>' +
+      '</div>';
+    document.body.appendChild(el);
+    root.classList.remove("notice-pending");
+    root.classList.add("notice-open");
+    var btn = el.querySelector(".notice-go");
+    btn.focus();
+
+    function close() {
+      try { localStorage.setItem(KEY, String(N.VERSION)); } catch (e) {}
+      root.classList.remove("notice-open");
+      el.classList.add("notice-leaving");
+      setTimeout(function(){ el.remove(); }, 250);
+    }
+    btn.addEventListener("click", close);
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") close();
+      if (e.key === "Tab") { e.preventDefault(); btn.focus(); }   // keep focus inside the notice
+    });
+  });
+})();
+
 (function () {
   var KEY = "portfolio-theme";
   var root = document.documentElement;

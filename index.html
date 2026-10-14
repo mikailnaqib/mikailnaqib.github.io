@@ -89,6 +89,12 @@ const PORTFOLIO = {
       specs: [["Role","CAD + fabrication"],["Result","+12% carrying capacity"],["Process","CAD · 3D printing"]]
     },
     {
+      title: "ADC Plane", kind: "TODO: project type", when: "TODO: dates",
+      image: "", figure: "plane", link: "adc-plane.html",
+      text: "TODO: one or two sentences about this project.",
+      specs: [["Role","TODO"],["Team","TODO"],["Result","TODO"]]
+    },
+    {
       title: "Motion-Controlled RC Car", kind: "High school project", when: "Earlier",
       image: "", figure: "car",
       text: "A wireless RC car steered by tilting a handheld controller. An IMU on the controller reads hand motion and an RF link sends commands to the car's microcontroller.",
@@ -118,9 +124,9 @@ const PORTFOLIO = {
   ],
 
   contact: [
-    ["Email", "TODO: your email", ""],
-    ["LinkedIn", "TODO: linkedin.com/in/…", ""],
-    ["Resume", "TODO: link to PDF", ""]
+    ["Email", "mikailnaqib66@gmail.com", "mailto:mikailnaqib66@gmail.com"],
+    ["LinkedIn", "linkedin.com/in/syed-mikail-naqib", "https://www.linkedin.com/in/syed-mikail-naqib"],
+    ["Resume", "View resume (PDF)", "resume.pdf"]
   ]
 };
 
@@ -138,6 +144,13 @@ const FIGS = {
     <rect x="62" y="40" width="34" height="20" stroke="var(--accent)"/><rect x="104" y="40" width="34" height="20"/>
     <line x1="40" y1="80" x2="40" y2="120"/><line x1="160" y1="80" x2="160" y2="120"/><line x1="25" y1="120" x2="55" y2="120"/><line x1="145" y1="120" x2="175" y2="120"/>
     <g stroke-width="1" opacity=".7"><line x1="30" y1="140" x2="170" y2="140"/><line x1="30" y1="135" x2="30" y2="145"/><line x1="170" y1="135" x2="170" y2="145"/></g></svg>`,
+  plane:`<svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <g stroke-dasharray="3 4" opacity=".5"><line x1="100" y1="10" x2="100" y2="190"/></g>
+    <path d="M94 30 Q100 18 106 30 L106 160 L100 172 L94 160 Z" fill="var(--sheet)"/>
+    <path d="M94 78 L20 96 L20 108 L94 104 Z M106 78 L180 96 L180 108 L106 104 Z" fill="var(--sheet)"/>
+    <path d="M95 148 L66 158 L66 166 L95 162 Z M105 148 L134 158 L134 166 L105 162 Z" fill="var(--sheet)"/>
+    <line x1="90" y1="22" x2="110" y2="22" stroke="var(--accent)" stroke-width="2"/>
+    <circle cx="100" cy="92" r="4" fill="var(--accent)" stroke="none"/></svg>`,
   car:`<svg viewBox="0 0 200 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
     <rect x="40" y="60" width="120" height="40" rx="6"/><rect x="70" y="45" width="60" height="18" rx="3"/>
     <circle cx="65" cy="105" r="14" fill="var(--sheet)"/><circle cx="135" cy="105" r="14" fill="var(--sheet)"/>
@@ -234,7 +247,7 @@ const contact = `
     <div><span class="label" style="color:inherit;opacity:.6">D</span><h2>Let's build something that flies.</h2>
       <p>Questions about a project, or want to work together? Reach out.</p></div>
     <div class="links">
-      ${P.contact.map(([k,v,href],i)=>`<div class="row"><span class="k">${esc(k)}</span>${href?`<a href="${esc(href)}" target="_blank" rel="noopener">${esc(v)}</a>`:`<span id="c${i}">${esc(v)}</span>`}<button class="copy" type="button" data-v="${esc(v)}">Copy</button></div>`).join("")}
+      ${P.contact.map(([k,v,href],i)=>`<div class="row"><span class="k">${esc(k)}</span>${href?`<a href="${esc(href)}" target="_blank" rel="noopener">${esc(v)}</a>`:`<span id="c${i}">${esc(v)}</span>`}${(!href || /^(https?:|mailto:)/.test(href)) ? `<button class="copy" type="button" data-v="${esc(/^https?:/.test(href) ? href : v)}">Copy</button>` : ""}</div>`).join("")}
     </div>
   </div>
   <footer><span class="label">Rev. Oct 2026</span><span class="label">${esc(P.name.preferred)} ${esc(P.name.last)}</span></footer>

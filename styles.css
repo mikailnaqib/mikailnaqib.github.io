@@ -179,3 +179,46 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
   .pager{grid-template-columns:1fr}
   .pager a + a{border-left:none;border-top:1.5px solid var(--ink);text-align:left}
 }
+
+/* ---------- Stacked title block (info cells in a row along the bottom) ----------
+   Use it by writing <header class="titleblock stacked"> */
+.titleblock.stacked{grid-template-columns:1fr}
+.titleblock.stacked .tb-main{border-right:none;border-bottom:1.5px solid var(--ink)}
+.titleblock.stacked .tb-cells{grid-template-columns:repeat(4,minmax(0,1fr));min-width:0}
+.titleblock.stacked .tb-cell{border-bottom:none;border-right:1px solid var(--line)}
+.titleblock.stacked .tb-cell:last-child{border-right:none}
+@media (max-width:760px){
+  .titleblock.stacked .tb-cells{grid-template-columns:1fr 1fr}
+  .titleblock.stacked .tb-cell{border-right:none;border-bottom:1px solid var(--line)}
+  .titleblock.stacked .tb-cell:nth-child(odd){border-right:1px solid var(--line)}
+  .titleblock.stacked .tb-cell:nth-last-child(-n+2){border-bottom:none}
+}
+
+/* ---------- Under-construction notice (text lives in site.js) ---------- */
+.notice-pending body{visibility:hidden}
+.notice-open body{overflow:hidden}
+.notice{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;visibility:visible}
+.notice-card{width:100%;max-width:560px;background:var(--sheet);border:1.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.notice-tape{height:14px;background:repeating-linear-gradient(-45deg,var(--accent) 0 12px,var(--sheet) 12px 24px)}
+.notice-body{padding:var(--s6) var(--s6) var(--s6);display:grid;gap:var(--s3);justify-items:start}
+.notice-body h2{font-size:clamp(2.2rem,7vw,3.4rem);text-transform:uppercase}
+.notice-body p{margin:0;max-width:46ch;color:var(--ink-2)}
+.notice-go{margin-top:var(--s3);display:inline-flex;align-items:center;gap:.6em;cursor:pointer;
+  font-family:var(--font-mono);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  background:var(--ink);color:var(--sheet);border:1.5px solid var(--ink);padding:.8em 1.2em}
+.notice-go svg{width:18px;height:18px}
+.notice-go:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.notice-go:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){
+  .notice-card{animation:notice-in .35s ease-out}
+  .notice-go svg{transition:transform .2s ease}
+  .notice-go:hover svg{transform:translateX(4px)}
+  .notice{transition:opacity .25s ease}
+}
+.notice-leaving{opacity:0}
+@keyframes notice-in{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@media (max-width:760px){.notice-body{padding:var(--s5) var(--s4)}.notice-card{box-shadow:5px 5px 0 var(--ink)}}
