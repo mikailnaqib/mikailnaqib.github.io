@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ADC Plane · Mikail Naqib</title>
-<meta name="description" content="ADC Plane, an aircraft project by Mikail Naqib.">
+<meta name="description" content="ADC Plane: a small-form-factor RC airplane built by a three-person team for an intramural competition, placing 3rd.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="styles.css">
@@ -25,34 +25,50 @@
   <!-- ============ TITLE BLOCK ============ -->
   <header class="titleblock stacked">
     <div class="tb-main">
-      <span class="label">DWG 03 · TODO: project type</span>
+      <span class="label">DWG 03 · Radio-controlled plane</span>
       <h1>ADC Plane</h1>
-      <div class="tb-role">TODO: one-line subtitle</div>
+      <div class="tb-role">Small Form Factor Intramural Competition RC Airplane</div>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="label">Role</span><span class="v">TODO</span></div>
-      <div class="tb-cell"><span class="label">Team</span><span class="v">TODO</span></div>
-      <div class="tb-cell"><span class="label">Timeline</span><span class="v">TODO</span></div>
-      <div class="tb-cell"><span class="label">Result</span><span class="v">TODO</span></div>
+      <div class="tb-cell"><span class="label">Team</span><span class="v">3-person team</span></div>
+      <div class="tb-cell"><span class="label">Timeline</span><span class="v">Fall 2024 – Spring 2025</span></div>
+      <div class="tb-cell"><span class="label">Result</span><span class="v">3rd place</span></div>
     </div>
   </header>
 
-  <!-- ============ WHAT I BUILT AND WHY ============ -->
-  <section>
-    <div class="sec-head"><span class="label">A</span><h2>What I built and why</h2></div>
-    <div class="todo">
-      <span class="label">To add</span>
-      <p style="margin:0">Waiting on your write-up.</p>
+  <!-- ============ PROJECT WRITE-UP ============
+       To edit: change the text inside each <p>...</p>. -->
+  <section class="story">
+    <div class="sec-head"><span class="label">A</span><h2>From Foam to Flight</h2></div>
+    <div class="prose">
+      <p>The Aviation Design Competition (ADC) was AIAA UTD's onboarding program for new members, run by two former Design/Build/Fly members as a pipeline into DBF. Every team received the same set of electronics and one goal: build the plane that could fly the fastest loop, with the entire aircraft fitting inside a 1&nbsp;m &times; 1&nbsp;m &times; 1&nbsp;m box. About seven teams competed.</p>
+      <p>Our three-person team went with a conventional layout, with a standard wing and tail and nothing unusual in the planform. Since every team flew the same electronics, the contest came down to the airframe. Before building anything, we used XFLR5 to select our airfoil, size the tail, and check the aircraft's stability. I worked on the CAD in SolidWorks and on manufacturing, and the airframe was cut from pink XPS foam.</p>
+      <p>The biggest problem I faced during manufacturing was the wing. With only foam it was crazy flexible. It bent visibly under load, and a wing that deflects in flight changes shape at exactly the moment it needs to hold steady. I took on the challenge of reinforcing it. I sandwiched basswood spars into the wing along its full span, interlayered with the foam. This greatly increased the wing's bending stiffness: basswood is far stiffer than XPS foam, so the spars carried most of the bending load and the wing deflected much less under the same load. I then covered the entire wing in duct tape. The tape gave it a smooth, continuous outer skin, added torsional rigidity, increased the bond between the basswood and foam, and made the surface tough enough to absorb impacts.</p>
+      <p>I thought at first it was overkill, but it seems I was mistaken. Our first three flight attempts ended in crashes, but the wing came through all three fully intact. Without that, we would have spent our remaining time rebuilding instead of flying.</p>
+      <p>Here's a photo of us working on the plane at the field.</p>
     </div>
-  </section>
 
-  <!-- ============ DESIGN DETAILS ============ -->
-  <section>
-    <div class="sec-head"><span class="label">B</span><h2>Design details</h2></div>
-    <div class="todo">
-      <span class="label">To add</span>
-      <p style="margin:0">Waiting on your write-up.</p>
+    <!-- PHOTO: to swap it, replace images/adc-field.jpg with a new file of the same name -->
+    <figure class="media media-portrait">
+      <img src="images/adc-field.jpg" alt="Three team members working on the foam RC plane at a picnic table at the flying field" width="1050" height="1400" loading="lazy">
+      <figcaption class="label">Fig. 1 · Working on the plane at the field</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>The flight that finally stayed in the air came on the last day we were able to fly, so there was no chance to adjust anything afterward. The plane had to work exactly as built, and it did. Our pilot said it flew very well, and we posted the third-fastest loop time of the roughly seven teams, earning 3rd place.</p>
+      <p>ADC was my first experience taking an aircraft from analysis through the build to the flying field, and I am very proud of how it turned out. It also did what it was designed to do. The organizers told me I'd be a strong addition to Design/Build/Fly, and I joined the DBF team in May 2025.</p>
+      <p>Here is the video of the maiden flight.</p>
     </div>
+
+    <!-- VIDEO: to use a different video, change the ID after /embed/ and in the link below -->
+    <figure class="media">
+      <div class="video">
+        <iframe src="https://www.youtube-nocookie.com/embed/ChAqB_1DsFA" title="ADC plane maiden flight" loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <figcaption><a class="video-link" href="https://www.youtube.com/watch?v=ChAqB_1DsFA" target="_blank" rel="noopener">Watch on YouTube &rarr;</a></figcaption>
+    </figure>
   </section>
 
   <nav class="pager" aria-label="More projects">

@@ -3,11 +3,11 @@
    Loaded in <head> so the saved theme applies before the page draws. */
 
 /* ===== UNDER-CONSTRUCTION NOTICE: edit the text here =====
-   Set SHOW to false to turn the notice off for everyone.
-   Change VERSION (e.g. to 2) to show it again to people who already dismissed it. */
+   SHOW: set to false to turn the notice off for everyone.
+   It appears on the front page at the start of every visit
+   (not again when someone clicks around within the same visit). */
 var CONSTRUCTION_NOTICE = {
   SHOW: true,
-  VERSION: 1,
   label: "Notice · Work in progress",
   title: "Under construction",
   text: "Forewarning: this website is still being built. Some projects are missing details and photos, and pages may change as I add more of my work.",
@@ -17,9 +17,12 @@ var CONSTRUCTION_NOTICE = {
 (function () {
   var N = CONSTRUCTION_NOTICE, KEY = "portfolio-notice-seen", root = document.documentElement;
   if (!N.SHOW) return;
+  // Only on the front page (marked with <meta name="portfolio-page" content="home">)
+  if (!document.querySelector('meta[name="portfolio-page"][content="home"]')) return;
+  // sessionStorage resets when the tab or browser is closed, so every new visit sees it
   var seen = null;
-  try { seen = localStorage.getItem(KEY); } catch (e) {}
-  if (seen === String(N.VERSION)) return;
+  try { seen = sessionStorage.getItem(KEY); } catch (e) {}
+  if (seen) return;
 
   root.classList.add("notice-pending");   // hides the page until the notice is up
 
@@ -51,7 +54,7 @@ var CONSTRUCTION_NOTICE = {
     btn.focus();
 
     function close() {
-      try { localStorage.setItem(KEY, String(N.VERSION)); } catch (e) {}
+      try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
       root.classList.remove("notice-open");
       el.classList.add("notice-leaving");
       setTimeout(function(){ el.remove(); }, 250);

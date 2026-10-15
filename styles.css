@@ -184,14 +184,16 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
    Use it by writing <header class="titleblock stacked"> */
 .titleblock.stacked{grid-template-columns:1fr}
 .titleblock.stacked .tb-main{border-right:none;border-bottom:1.5px solid var(--ink)}
-.titleblock.stacked .tb-cells{grid-template-columns:repeat(4,minmax(0,1fr));min-width:0}
+.titleblock.stacked .tb-cells{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);min-width:0}
 .titleblock.stacked .tb-cell{border-bottom:none;border-right:1px solid var(--line)}
 .titleblock.stacked .tb-cell:last-child{border-right:none}
 @media (max-width:760px){
-  .titleblock.stacked .tb-cells{grid-template-columns:1fr 1fr}
+  .titleblock.stacked .tb-cells{grid-auto-flow:row;grid-template-columns:1fr 1fr}
   .titleblock.stacked .tb-cell{border-right:none;border-bottom:1px solid var(--line)}
   .titleblock.stacked .tb-cell:nth-child(odd){border-right:1px solid var(--line)}
-  .titleblock.stacked .tb-cell:nth-last-child(-n+2){border-bottom:none}
+  .titleblock.stacked .tb-cell:last-child{border-bottom:none}
+  .titleblock.stacked .tb-cell:nth-last-child(2):nth-child(odd){border-bottom:none}
+  .titleblock.stacked .tb-cell:last-child:nth-child(odd){grid-column:1/-1;border-right:none}
 }
 
 /* ---------- Under-construction notice (text lives in site.js) ---------- */
@@ -222,3 +224,14 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
 .notice-leaving{opacity:0}
 @keyframes notice-in{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 @media (max-width:760px){.notice-body{padding:var(--s5) var(--s4)}.notice-card{box-shadow:5px 5px 0 var(--ink)}}
+
+/* ---------- Project write-up with photo and video ---------- */
+.story{max-width:760px}
+.story .prose p{text-wrap:pretty}
+.media{margin:var(--s5) 0}
+.media img{display:block;width:100%;height:auto;border:1.5px solid var(--ink);background:var(--sheet)}
+.media figcaption{margin-top:var(--s2)}
+.video{position:relative;aspect-ratio:16/9;max-width:100%;border:1.5px solid var(--ink);background:var(--ink)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-link{display:inline-block;margin-top:var(--s2);font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.media-portrait img{width:auto;max-width:100%;max-height:min(80vh,720px)}
