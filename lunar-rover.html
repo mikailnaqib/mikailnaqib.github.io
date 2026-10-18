@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lunar Rover · Mikail Naqib</title>
+<meta name="description" content="CAD, engineering drawings, and machined parts for Comet Aerobotics' autonomous lunar excavation rover in NASA Lunabotics, by Mikail Naqib.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js"></script>
+</head>
+<body>
+<div class="wrap detail">
+
+  <div class="topbar">
+    <div class="theme-switch" role="group" aria-label="Color theme">
+      <button type="button" data-mode="system" aria-pressed="false" aria-label="System theme" title="System"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="9"/><path d="M5.5 14.5h5M8 11.5v3"/></svg></button>
+      <button type="button" data-mode="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3"/></svg></button>
+      <button type="button" data-mode="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13.5 9.5A6 6 0 0 1 6.5 2.5a6 6 0 1 0 7 7z"/></svg></button>
+    </div>
+    <a class="back" href="index.html#projects">&larr; Portfolio</a>
+  </div>
+
+  <!-- ============ TITLE BLOCK ============ -->
+  <header class="titleblock stacked">
+    <div class="tb-main">
+      <span class="label">DWG 04 · NASA Lunabotics</span>
+      <h1>Lunar Rover</h1>
+      <div class="tb-role">Autonomous lunar excavation rover with Comet Aerobotics</div>
+    </div>
+    <div class="tb-cells">
+      <div class="tb-cell"><span class="label">Team</span><span class="v">Comet Aerobotics</span></div>
+      <div class="tb-cell"><span class="label">Role</span><span class="v">CAD Specialist</span></div>
+      <div class="tb-cell"><span class="label">Timeline</span><span class="v">Spring 2025 – Fall 2026</span></div>
+    </div>
+  </header>
+
+  <!-- ============ PROJECT WRITE-UP ============
+       To edit: change the text inside each <p>...</p>. -->
+  <section class="story">
+    <div class="sec-head"><span class="label">A</span><h2>Rebuilding the Excavator</h2></div>
+    <div class="prose">
+      <p>Comet Aerobotics is AIAA UTD's team for NASA's Lunabotics Challenge, where university teams design and build a robot (modeled after a lunar rover) that can navigate a simulated lunar surface, excavate regolith simulant, and use it to build berm structures, all within strict size and weight limits. I joined Comet Aerobotics because it sounded cool, and it ended up being one of the most enriching experiences I've had at university.</p>
+      <p>My first semester, I helped model the excavator's components in SolidWorks and produced the engineering drawings that were sent out to be machined. At the end of that same semester, I was offered the position of CAD Specialist.</p>
+      <p>As CAD Specialist, I rebuilt the entire excavator assembly from the ground up: I remodeled the parts, rebuilt the full assembly in SolidWorks, and made a new set of engineering drawings. Then, I took some of those drawings to the shop and machined the parts myself, cutting the plates on a bandsaw, drilling the hole patterns on a drill press, and finishing and polishing each part by hand.</p>
+    </div>
+
+    <!-- PHOTOS: two side by side -->
+    <div class="media media-pair">
+      <figure><img src="images/rover-plates-1.jpg" alt="Three machined aluminum plates with drilled hole patterns on a table" width="900" height="1200" loading="lazy"></figure>
+      <figure><img src="images/rover-plates-2.jpg" alt="Stacked machined aluminum plates with four counterbored holes" width="900" height="1200" loading="lazy"></figure>
+      <p class="label media-cap">Fig. 1 · Some plates I machined myself</p>
+    </div>
+
+    <div class="prose">
+      <p>The hardest design problem was the belt. The excavator digs with a belt of buckets running around a set of wheels, and we needed a way to take that belt on and off without tearing the assembly apart. We solved it with a design a teammate nicknamed the "Pancake Tensioner": two plates separated by spacers and joined with screws. Loosening or tightening those screws moves the bottom wheels up or down, which slackens or tensions the entire belt. To swap the belt, you loosen a few screws instead of disassembling the entire excavator.</p>
+    </div>
+
+    <figure class="media media-portrait">
+      <img src="images/rover-layout.jpg" alt="Machined aluminum excavator plates and steel shafts laid out on the floor" width="900" height="1200" loading="lazy">
+      <figcaption class="label">Fig. 2 · All of our metal parts laid out together</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>For media purposes, I also made an exploded animation of the excavator CAD. It shows how the parts of the system fit together and how the excavator works.</p>
+    </div>
+
+    <figure class="media">
+      <video class="anim" poster="images/rover-excavator-poster.jpg" autoplay muted loop playsinline aria-label="Exploded animation of the excavator assembly in SolidWorks">
+        <source src="images/rover-excavator-exploded.webm" type="video/webm">
+        <source src="images/rover-excavator-exploded.mp4" type="video/mp4">
+      </video>
+      <figcaption class="label">Fig. 3 · Exploded animation of the excavator assembly</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>By the end of my time on the team, I had taken parts all the way from a SolidWorks model to an engineering drawing to a finished piece of metal. It was my first foray into metal fabrication, and this experience eventually helped me get a job in a workshop, where my role was to manage the drill presses and bandsaws and make sure people used them safely.</p>
+      <p>I also received the team's "Duct Tape Saves Lives" award. The director at the time said she gave it to me for my attitude and tenacity, and because, in her words, I was a really resourceful guy.</p>
+    </div>
+  </section>
+
+  <nav class="pager" aria-label="More projects">
+    <a href="dbf-plane.html"><span class="label">Previous</span><strong>&larr; DBF Plane</strong></a>
+    <a href="adc-plane.html"><span class="label">Next</span><strong>ADC Plane &rarr;</strong></a>
+  </nav>
+
+</div>
+</body>
+</html>

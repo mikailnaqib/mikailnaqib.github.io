@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mahbub Lab Work · Mikail Naqib</title>
+<meta name="description" content="Design and fabrication work by Mikail Naqib for members of the Mahbub Lab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js"></script>
+</head>
+<body>
+<div class="wrap detail">
+
+  <div class="topbar">
+    <div class="theme-switch" role="group" aria-label="Color theme">
+      <button type="button" data-mode="system" aria-pressed="false" aria-label="System theme" title="System"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="9"/><path d="M5.5 14.5h5M8 11.5v3"/></svg></button>
+      <button type="button" data-mode="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3"/></svg></button>
+      <button type="button" data-mode="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13.5 9.5A6 6 0 0 1 6.5 2.5a6 6 0 1 0 7 7z"/></svg></button>
+    </div>
+    <a class="back" href="index.html#projects">&larr; Portfolio</a>
+  </div>
+
+  <!-- ============ TITLE BLOCK ============ -->
+  <header class="titleblock stacked">
+    <div class="tb-main">
+      <span class="label">DWG 02 · Folder</span>
+      <h1>Mahbub Lab Work</h1>
+      <div class="tb-role">Design and fabrication work for members of the lab</div>
+    </div>
+  </header>
+
+  <!-- ============ ABOUT ============
+       Write your description here: replace the whole <div class="todo">...</div>
+       with one or more paragraphs, like:
+       <div class="prose"><p>Your text here.</p></div> -->
+  <section>
+    <div class="sec-head"><span class="label">A</span><h2>About</h2></div>
+    <div class="todo">
+      <span class="label">To add</span>
+      <p style="margin:0">A short description of this folder.</p>
+    </div>
+  </section>
+
+  <!-- ============ PROJECT LIST ============
+       To add a project: copy one whole <article class="sheet">...</article> block
+       (or <a class="sheet">...</a> if it has its own page), paste it below the
+       last one, and change the text. Bump the "No." number. -->
+  <section>
+    <div class="sec-head"><span class="label">B</span><h2>Projects</h2></div>
+    <div class="sheets">
+
+      <a class="sheet" href="research-drone.html">
+        <div class="fig">
+          <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+          <svg viewBox="0 0 200 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="30" y="70" width="140" height="10"/><rect x="50" y="30" width="100" height="40" rx="3"/>
+            <rect x="62" y="40" width="34" height="20" stroke="var(--accent)"/><rect x="104" y="40" width="34" height="20"/>
+            <line x1="40" y1="80" x2="40" y2="120"/><line x1="160" y1="80" x2="160" y2="120"/><line x1="25" y1="120" x2="55" y2="120"/><line x1="145" y1="120" x2="175" y2="120"/>
+            <g stroke-width="1" opacity=".7"><line x1="30" y1="140" x2="170" y2="140"/><line x1="30" y1="135" x2="30" y2="145"/><line x1="170" y1="135" x2="170" y2="145"/></g></svg>
+          <span class="label fig-cap">No. 01</span>
+        </div>
+        <div class="sheet-body">
+          <div class="sheet-top">
+            <div class="label">No. 01 · 2026</div>
+            <h3 style="margin-top:var(--s2)">Research Drone Payload Upgrade</h3>
+            <p>Modified the lab's 500-class drone platform to carry more and hold new hardware. I modeled and printed added platforms and the electronics housings that mount to them.</p>
+            <span class="more">View project &rarr;</span>
+          </div>
+          <div class="specs">
+            <div><span class="label">Role</span><span class="v">CAD + fabrication</span></div>
+            <div><span class="label">Result</span><span class="v">+12% carrying capacity</span></div>
+            <div><span class="label">Process</span><span class="v">CAD · 3D printing</span></div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <nav class="pager" aria-label="More projects">
+    <a href="quadcopter.html"><span class="label">Previous</span><strong>&larr; Autonomous Quadcopter</strong></a>
+    <a href="dbf-plane.html"><span class="label">Next</span><strong>DBF Plane &rarr;</strong></a>
+  </nav>
+
+</div>
+</body>
+</html>
