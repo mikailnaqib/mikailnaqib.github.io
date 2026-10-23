@@ -246,3 +246,15 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
 /* ---------- Links inside write-ups ---------- */
 .prose a{color:var(--accent);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .prose a:hover{text-decoration-thickness:2.5px}
+
+/* ---------- Small photo pair inside a project card ---------- */
+.mini-pair{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s4)}
+.mini-pair figure{margin:0;display:grid;gap:var(--s1)}
+.mini-pair img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line)}
+.mini-trio{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* ---- photo placeholder + 3D model viewer ---- */
+.media-placeholder .ph{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;border:1.5px dashed var(--line);background:var(--sheet);color:var(--ink-2);text-align:center;padding:var(--s4)}
+.media-model model-viewer{display:block;width:100%;height:min(70vh,520px);border:1.5px solid var(--ink);background:var(--sheet);--poster-color:transparent}
+.media-model .hint{color:var(--ink-2)}
+@media (max-width:760px){.media-model model-viewer{height:360px}}

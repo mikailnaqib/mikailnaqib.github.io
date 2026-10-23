@@ -43,7 +43,7 @@ const PORTFOLIO = {
       tags: ["Leadership", "Program management"]
     },
     {
-      title: "Mechanics Team Member", org: "Comet Aviation, AIAA UTD · Design/Build/Fly", when: "May 2025 – Aug 2026",
+      title: "Mechanics Member", org: "Comet Aviation, AIAA UTD · Design/Build/Fly", when: "May 2025 – Aug 2026",
       points: [
         "Led fuselage development for a 5-ft wingspan RC competition aircraft, cutting fuselage weight by 7%",
         "Fabricated structures with carbon fiber and fiberglass composites, using 3D printing for rapid design iteration"
@@ -67,7 +67,7 @@ const PORTFOLIO = {
       tags: ["Research", "Robotics", "Additive manufacturing"]
     },
     {
-      title: "CAD Specialist", org: "Comet Aerobotics, AIAA UTD · NASA Lunabotics", when: "Feb 2025 – Aug 2026",
+      title: "CAD Specialist", org: "Comet Aerobotics, AIAA UTD · NASA Lunabotics", when: "May 2025 – Aug 2026",
       points: [
         "Modeled 120+ components and animated assemblies for a lunar excavation rover",
         "Produced 17 engineering drawings and machined custom components for the build"
@@ -102,13 +102,13 @@ const PORTFOLIO = {
     {
       title: "Mahbub Lab Work", kind: "Folder", when: "2026 – present",
       image: "", figure: "folder", link: "mahbub-lab.html", linkText: "Open folder",
-      text: "Design and fabrication work for members of a university research lab, starting with a payload upgrade to the lab's drone platform.",
+      text: "Design and fabrication work for members of a university radio frequency research lab.",
       specs: []   // folder cards have no spec row
     },
     {
       title: "DBF Plane", kind: "AIAA Design/Build/Fly", when: "May 2025 – Aug 2026",
       image: "", figure: "dbf", link: "dbf-plane.html",
-      text: "Led fuselage development for Comet Aviation's 5-ft wingspan competition aircraft, building with carbon fiber and fiberglass composites and using 3D printing for rapid iteration.",
+      text: "Helped build the fuselage of Leviathan, Comet Aviation's carbon fiber banner-towing bush plane, and refined our mold and layup process to cut fuselage weight by 7%.",
       specs: [["Team","Comet Aviation"],["Role","Mechanics Member"],["Result","23rd overall"]]
     },
     {
@@ -263,7 +263,7 @@ const projects = `
       <div class="fig">
         <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
         ${p.image?`<img src="${esc(p.image)}" alt="${esc(p.title)}">`:(FIGS[p.figure]||FIGS.quad)}
-        <span class="label fig-cap">Fig. ${i+1}${(p.image||p.figure==="folder")?"":" · add photo"}</span>
+        <span class="label fig-cap">Fig. ${i+1}</span>
       </div>
       <div class="sheet-body">
         <div class="sheet-top">

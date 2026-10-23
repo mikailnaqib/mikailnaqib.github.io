@@ -37,9 +37,8 @@
        <div class="prose"><p>Your text here.</p></div> -->
   <section>
     <div class="sec-head"><span class="label">A</span><h2>About</h2></div>
-    <div class="todo">
-      <span class="label">To add</span>
-      <p style="margin:0">A short description of this folder.</p>
+    <div class="prose">
+      <p>A collection of smaller projects: ones that either don't have enough meat for a full page of their own, or that I don't have enough documentation for.</p>
     </div>
   </section>
 
@@ -56,15 +55,45 @@
         <div class="fig">
           <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
           <svg viewBox="0 0 200 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <rect x="40" y="60" width="120" height="40" rx="6"/><rect x="70" y="45" width="60" height="18" rx="3"/>
-            <circle cx="65" cy="105" r="14" fill="var(--sheet)"/><circle cx="135" cy="105" r="14" fill="var(--sheet)"/>
-            <g stroke="var(--accent)"><path d="M150 30 a14 14 0 0 1 14 14"/><path d="M150 20 a24 24 0 0 1 24 24"/></g>
-            <circle cx="150" cy="44" r="3" fill="var(--accent)" stroke="none"/></svg>
+            <path d="M52 52 Q100 40 148 52 Q176 58 182 100 Q186 128 166 128 Q152 128 140 108 L60 108 Q48 128 34 128 Q14 128 18 100 Q24 58 52 52 Z" fill="var(--sheet)"/>
+            <path d="M50 46 Q66 38 80 42" stroke="var(--line)"/><path d="M120 42 Q134 38 150 46" stroke="var(--accent)" stroke-width="3"/>
+            <circle cx="62" cy="78" r="10"/><circle cx="118" cy="96" r="9"/>
+            <path d="M80 92 h12 M86 86 v12"/>
+            <circle cx="140" cy="70" r="4"/><circle cx="150" cy="80" r="4"/><circle cx="130" cy="80" r="4"/><circle cx="140" cy="90" r="4"/></svg>
           <span class="label fig-cap">No. 01</span>
         </div>
         <div class="sheet-body">
           <div class="sheet-top">
-            <div class="label">No. 01 · High school project</div>
+            <div class="label">No. 01 &middot; Electronics repair</div>
+            <h3 style="margin-top:var(--s2)">Fixing an Xbox Controller</h3>
+            <p>My Xbox controller sat unused for years after its right bumper stopped working. After I started working on the quadcopter, I thought, &ldquo;I can solder now, and I&rsquo;m getting into electronics, why not try fixing the controller?&rdquo; After doing some research, I bought a replacement motherboard and swapped it in, doing the soldering myself on a very questionable setup with no extra light and no extra hands. Once I was done soldering I put it all back together, put the batteries in, loaded up a game, and started playing.</p>
+            <div class="mini-pair mini-trio">
+              <figure><img src="images/xbox-soldering.jpg" alt="Soldering the controller's motherboard on a silicone mat" loading="lazy"><figcaption class="label">The setup</figcaption></figure>
+              <figure><img src="images/xbox-boards.jpg" alt="The old controller board next to the new replacement board" loading="lazy"><figcaption class="label">Old board vs. new</figcaption></figure>
+              <figure><img src="images/xbox-working.jpg" alt="The repaired blue Xbox controller held in front of a laptop running Minecraft Dungeons 2" style="object-position:40% 62%" loading="lazy"><figcaption class="label">On the game!</figcaption></figure>
+            </div>
+          </div>
+          <div class="specs">
+            <div><span class="label">Problem</span><span class="v">Dead right bumper</span></div>
+            <div><span class="label">Fix</span><span class="v">New motherboard</span></div>
+            <div><span class="label">Skills</span><span class="v">Research · Soldering</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sheet">
+        <div class="fig">
+          <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+          <svg viewBox="0 0 200 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="40" y="60" width="120" height="40" rx="6"/><rect x="70" y="45" width="60" height="18" rx="3"/>
+            <circle cx="65" cy="105" r="14" fill="var(--sheet)"/><circle cx="135" cy="105" r="14" fill="var(--sheet)"/>
+            <g stroke="var(--accent)"><path d="M150 30 a14 14 0 0 1 14 14"/><path d="M150 20 a24 24 0 0 1 24 24"/></g>
+            <circle cx="150" cy="44" r="3" fill="var(--accent)" stroke="none"/></svg>
+          <span class="label fig-cap">No. 02</span>
+        </div>
+        <div class="sheet-body">
+          <div class="sheet-top">
+            <div class="label">No. 02 · High school project</div>
             <h3 style="margin-top:var(--s2)">Motion-Controlled RC Car</h3>
             <p>A wireless RC car steered by tilting a handheld controller. An IMU on the controller reads hand motion and an RF link sends commands to the car's microcontroller.</p>
           </div>

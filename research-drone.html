@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="styles.css">
 <script src="site.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
 <div class="wrap detail">
@@ -25,42 +26,78 @@
   <!-- ============ TITLE BLOCK ============ -->
   <header class="titleblock stacked">
     <div class="tb-main">
-      <span class="label">Mahbub Lab Work · No. 01</span>
+      <span class="label">Mahbub Lab Work · No. 02</span>
       <h1>Research Drone Payload Upgrade</h1>
       <div class="tb-role">More carrying capacity and new electronics mounts for a lab platform</div>
     </div>
     <div class="tb-cells">
       <div class="tb-cell"><span class="label">Role</span><span class="v">CAD + fabrication</span></div>
-      <div class="tb-cell"><span class="label">Result</span><span class="v">+12% carrying capacity</span></div>
-      <div class="tb-cell"><span class="label">Platform</span><span class="v">500-class quadcopter</span></div>
-      <div class="tb-cell"><span class="label">Process</span><span class="v">CAD · 3D printing</span></div>
+      <div class="tb-cell"><span class="label">Platform</span><span class="v">500 V2 quadcopter</span></div>
+      <div class="tb-cell"><span class="label">Process</span><span class="v">SolidWorks · PLA printing</span></div>
+      <div class="tb-cell"><span class="label">Timeline</span><span class="v">Under a month</span></div>
     </div>
   </header>
 
-  <!-- ============ WHAT I BUILT AND WHY ============ -->
-  <section>
-    <div class="sec-head"><span class="label">A</span><h2>What I built and why</h2></div>
-    <div class="prose">
-      <p>The lab needed its 500-class drone to carry more and to hold new electronics for its research. I modeled and 3D printed every part of the upgrade.</p>
-      <ul class="pts">
-        <li><strong>Payload capacity:</strong> modified the platform so it carries 12% more than before.</li>
-        <li><strong>Mounting platforms:</strong> added platforms to the airframe for the lab's new electronics.</li>
-        <li><strong>Electronics housings:</strong> designed enclosures that hold and protect the electronics on those platforms.</li>
-      </ul>
-    </div>
-  </section>
+  <!-- ============ PROJECT WRITE-UP ============
+       To edit: change the text inside each <p>...</p>.
+       To add a photo between paragraphs, paste one of these between two </div> / <div class="prose"> blocks:
 
-  <!-- ============ DETAILS (fill in) ============ -->
-  <section>
-    <div class="sec-head"><span class="label">B</span><h2>Design details</h2></div>
-    <div class="todo">
-      <span class="label">To add</span>
-      <ul>
-        <li>What the lab uses the drone for, and what electronics it needed to carry</li>
-        <li>Design constraints you worked around (weight, balance, vibration, wiring access)</li>
-        <li>How the 12% gain was achieved and how it was measured</li>
-        <li>Which CAD software and print material you used</li>
-      </ul>
+       One wide photo:
+       <figure class="media">
+         <img src="images/drone-photo.jpg" alt="Describe the photo" loading="lazy">
+         <figcaption class="label">Fig. 1 &middot; Caption</figcaption>
+       </figure>
+
+       Two photos side by side:
+       <div class="media media-pair">
+         <figure><img src="images/drone-a.jpg" alt="Describe it" loading="lazy"></figure>
+         <figure><img src="images/drone-b.jpg" alt="Describe it" loading="lazy"></figure>
+         <p class="label media-cap">Fig. 2 &middot; Caption</p>
+       </div> -->
+  <section class="story">
+    <div class="sec-head"><span class="label">A</span><h2>Lightening the Load</h2></div>
+    <div class="prose">
+      <p>The PhD student behind this project is a good friend of mine I met through <a href="lunar-rover.html">Comet Aerobotics</a>. He knew I was good at CAD, so when he needed to put some electronics on his drone, he asked me to help, and I said yes. It was my first time working in this lab.</p>
+      <p>His research needed a drone that could carry a set of antenna equipment: a Raspberry Pi, an Ettus USRP B206mini-i, an antenna array, and a power splitter, about 750&nbsp;g all together. The lab had a completely stock 500 V2 quadcopter, but its frame was too heavy to carry all of that.</p>
+    </div>
+
+    <!-- PHOTO PLACEHOLDER: replace this whole <figure> with:
+         <figure class="media">
+           <img src="images/drone-bare.jpg" alt="The modified drone without its electronics" loading="lazy">
+           <figcaption class="label">Fig. 1 &middot; The drone without its electronics</figcaption>
+         </figure> -->
+    <figure class="media media-placeholder">
+      <div class="ph label">Photo coming &middot; the drone without its electronics</div>
+      <figcaption class="label">Fig. 1 &middot; The drone without its electronics</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>So I took the whole drone apart, weighed every part, and looked for what I could replace and where. I swapped the thick carbon fiber legs for much thinner ones and cut down the frame plates. Together, those changes gave the drone 12% more payload capacity.</p>
+      <p>The electronics needed somewhere to live though, so I designed a mounting platform in SolidWorks that sits under the frame on the drone's two existing tube mounts, with cages that hold each piece of equipment. Since the drone only flies in very specific conditions, the cages just need to hold everything in place, not protect it. Everything was 3D printed in PLA.</p>
+    </div>
+
+    <!-- 3D MODEL: to swap it, replace images/drone-mount.glb with a new file of the same name -->
+    <figure class="media media-model">
+      <model-viewer src="images/drone-mount.glb" alt="Interactive 3D model of the 3D-printed mounting platform" camera-controls touch-action="pan-y" shadow-intensity="0.6" exposure="1.1" camera-orbit="30deg 70deg auto" interaction-prompt="auto"></model-viewer>
+      <figcaption class="label">Fig. 2 &middot; The mounting platform <span class="hint">(drag to rotate, scroll or pinch to zoom)</span></figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>The only real iteration was getting the electronics cages to fit. Once the fitment was right, connecting everything was pretty easy, and the whole project took less than a month.</p>
+    </div>
+
+    <!-- PHOTO PLACEHOLDER: replace this whole <figure> with:
+         <figure class="media">
+           <img src="images/drone-loaded.jpg" alt="The drone with all of its electronics mounted" loading="lazy">
+           <figcaption class="label">Fig. 3 &middot; The drone with everything mounted</figcaption>
+         </figure> -->
+    <figure class="media media-placeholder">
+      <div class="ph label">Photo coming &middot; the drone with its electronics</div>
+      <figcaption class="label">Fig. 3 &middot; The drone with everything mounted</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>The drone has flown with the new setup, and the lab is using it for research. The project also introduced me to Mr. Nayan, another member of the lab, and I'm now working with him on my current lab project, <a href="mahbub-lab.html">copper antenna FDM fabrication</a>.</p>
     </div>
   </section>
 
