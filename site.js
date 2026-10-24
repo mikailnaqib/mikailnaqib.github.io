@@ -96,3 +96,25 @@ var CONSTRUCTION_NOTICE = {
     }
   });
 })();
+
+/* A clickable project card "pops up" while it's crossing the middle of the
+   screen, and drops back down once it leaves (mouse-over still works too). */
+(function () {
+  document.addEventListener("DOMContentLoaded", function () {
+    var cards = document.querySelectorAll("a.sheet");
+    if (!cards.length) return;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var mid = window.innerHeight / 2;
+      for (var i = 0; i < cards.length; i++) {
+        var r = cards[i].getBoundingClientRect();
+        cards[i].classList.toggle("in-view", r.top <= mid && r.bottom >= mid);
+      }
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  });
+})();

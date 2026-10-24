@@ -23,92 +23,76 @@
   </div>
 
   <!-- ============ TITLE BLOCK ============ -->
-  <header class="titleblock">
+  <header class="titleblock stacked">
     <div class="tb-main">
       <span class="label">DWG 01 · Independent project</span>
       <h1>Autonomous Quadcopter</h1>
       <div class="tb-role">Designed, printed, and configured from the frame up</div>
-      <p class="tb-summary">A 7-inch quadcopter I'm building to learn every layer of an autonomous multirotor: structure, propulsion, power, avionics, and flight software. The airframe is my own design, and the flight controller is set up to fly GPS missions on its own.</p>
     </div>
     <div class="tb-cells">
       <div class="tb-cell"><span class="label">Role</span><span class="v">Solo: design, build, tuning</span></div>
       <div class="tb-cell"><span class="label">Timeline</span><span class="v">Jul 2026 – present</span></div>
-      <div class="tb-cell"><span class="label">Status</span><span class="v">In progress</span></div>
+      <div class="tb-cell"><span class="label">Status</span><span class="v">Calibrating &amp; tuning</span></div>
       <div class="tb-cell"><span class="label">Tools</span><span class="v">SolidWorks · ArduPilot · Mission Planner</span></div>
     </div>
   </header>
 
-  <!-- ============ FIGURES ============
-       To add a photo: put the image in an "images" folder and replace a whole
-       <div class="fig">…</div> block with:
-       <div class="fig"><img src="images/your-photo.jpg" alt="Describe the photo"></div> -->
-  <section>
-    <div class="sec-head"><span class="label">A</span><h2>Figures</h2></div>
-    <div class="gallery">
-      <div class="fig"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-        <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><line x1="52" y1="52" x2="148" y2="148" stroke-width="6" stroke-linecap="round"/><line x1="148" y1="52" x2="52" y2="148" stroke-width="6" stroke-linecap="round"/><rect x="80" y="80" width="40" height="40" rx="4" fill="var(--sheet)"/><circle cx="52" cy="52" r="30"/><circle cx="148" cy="52" r="30"/><circle cx="52" cy="148" r="30"/><circle cx="148" cy="148" r="30"/></svg>
-        <span class="label fig-cap">Fig. 1 · CAD render</span></div>
-      <div class="fig"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-        <svg viewBox="0 0 200 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="40" y="40" width="120" height="80"/><circle cx="100" cy="80" r="22"/><rect x="120" y="28" width="22" height="12"/></svg>
-        <span class="label fig-cap">Fig. 2 · Build photo</span></div>
-      <div class="fig"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-        <svg viewBox="0 0 200 160" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 130 L70 70 L120 100 L180 40" stroke-dasharray="4 4"/><circle cx="20" cy="130" r="5" fill="var(--accent)" stroke="none"/><circle cx="70" cy="70" r="4"/><circle cx="120" cy="100" r="4"/><circle cx="180" cy="40" r="4"/></svg>
-        <span class="label fig-cap">Fig. 3 · Mission plan / flight</span></div>
-    </div>
-  </section>
-
-  <!-- ============ AIRFRAME ============ -->
-  <section>
-    <div class="sec-head"><span class="label">B</span><h2>Airframe</h2></div>
+  <!-- ============ PROJECT WRITE-UP ============
+       To edit: change the text inside each <p>...</p>. -->
+  <section class="story">
+    <div class="sec-head"><span class="label">A</span><h2>Learning Autonomy From Scratch</h2></div>
     <div class="prose">
-      <p>I designed the frame in SolidWorks around 7-inch propellers, with room for the flight controller, GPS, receiver, and telemetry radio on one stack.</p>
-      <p>The frame is 3D printed in ASA. I chose ASA over PLA because it handles heat and sunlight much better, which matters for a frame that sits next to warm electronics and flies outdoors.</p>
+      <p>I've spent a lot of time around everything that flies, and I've always thought autonomy was super interesting. Then I came across a couple of Harvard engineering students who built a tilt-rotor VTOL UAV for their capstone project. I thought that was the perfect intersection of everything I was interested in, so I thought, &ldquo;Why don't I just copy them, but do it by myself?&rdquo;</p>
+      <p>I had never built or flown a drone before, but I do have a bunch of experience with airplanes (a tilt-rotor VTOL is a drone/plane hybrid). So I started this Autonomous Quadcopter project. I already knew how to design and build planes, so I'll do the same with a drone first and learn autopiloting at the same time. Once I've learned that, I'll put my knowledge together and build the tilt-rotor. So far, this project has been a crash course in multirotors, electronics, and flight software.</p>
     </div>
-  </section>
 
-  <!-- ============ HARDWARE ============ -->
-  <section>
-    <div class="sec-head"><span class="label">C</span><h2>System architecture</h2></div>
-    <div class="tablewrap">
-      <table class="bom">
-        <thead><tr><th>Subsystem</th><th>Hardware</th><th>Job</th></tr></thead>
-        <tbody>
-          <tr><td>Flight control</td><td>H7-based flight controller running ArduCopter</td><td>Stabilization, navigation, and mission execution</td></tr>
-          <tr><td>Navigation</td><td>M10 GPS module</td><td>Position fix for GPS hold, waypoints, and return-to-launch</td></tr>
-          <tr><td>Propulsion</td><td>Four 2807-size brushless motors, 7-inch three-blade props</td><td>Thrust</td></tr>
-          <tr><td>Motor control</td><td>60 A 4-in-1 ESC on AM32 firmware</td><td>Drives all four motors from one board</td></tr>
-          <tr><td>Power</td><td>4S LiPo packs</td><td>Main flight battery</td></tr>
-          <tr><td>Control link</td><td>2.4 GHz ExpressLRS receiver and handheld radio</td><td>Manual control and flight-mode switching</td></tr>
-          <tr><td>Telemetry</td><td>915 MHz telemetry radio</td><td>Live data and mission uploads to Mission Planner on a laptop</td></tr>
-          <tr><td>Recovery</td><td>DShot beacon (motors beep) instead of a separate buzzer</td><td>Helps locate the drone if it goes down, with one less part to carry</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <figure class="media">
+      <img src="images/quad-parts.jpg" alt="All of the quadcopter's parts laid out on a rug: radio transmitter and case, ESC, flight controller, hardware organizers, battery straps, two LiPo batteries, telemetry radios, four motors, and propellers" width="1400" height="567" loading="lazy">
+      <figcaption class="label">Fig. 1 &middot; Everything I bought, before the build</figcaption>
+    </figure>
 
-  <!-- ============ FLIGHT SOFTWARE ============ -->
-  <section>
-    <div class="sec-head"><span class="label">D</span><h2>Flight software</h2></div>
     <div class="prose">
-      <p>The flight controller runs ArduCopter, which I configure and tune through Mission Planner. The build is set up for three autonomous behaviors:</p>
-      <ul class="pts">
-        <li><strong>Waypoint missions:</strong> plan a route on a map in Mission Planner, upload it over telemetry, and the drone flies it.</li>
-        <li><strong>GPS position hold:</strong> the drone holds its position in the air without stick input.</li>
-        <li><strong>Return-to-launch failsafe:</strong> the drone flies itself home and lands if something goes wrong.</li>
-      </ul>
+      <p>First came electronics research. It took me around two weeks, but here's everything I ended up purchasing:</p>
     </div>
-  </section>
 
-  <!-- ============ RESULTS (fill in) ============ -->
-  <section>
-    <div class="sec-head"><span class="label">E</span><h2>Testing &amp; lessons</h2></div>
-    <div class="todo">
-      <span class="label">To add</span>
-      <ul>
-        <li>What happened in testing: first hover, tuning, first autonomous mission</li>
-        <li>Problems you hit and how you solved them</li>
-        <li>What you'd change in the next version of the frame</li>
-      </ul>
+    <!-- INFO BLOCK: system architecture table -->
+    <figure class="media">
+      <div class="tablewrap">
+        <table class="bom">
+          <thead><tr><th>Subsystem</th><th>Hardware</th><th>Job</th></tr></thead>
+          <tbody>
+            <tr><td>Flight control</td><td>H7-based flight controller running ArduCopter</td><td>Stabilization, navigation, and mission execution</td></tr>
+            <tr><td>Navigation</td><td>M10 GPS module</td><td>Position fix for GPS hold, waypoints, and return-to-launch</td></tr>
+            <tr><td>Propulsion</td><td>Four 2807-size brushless motors, 7-inch three-blade props</td><td>Thrust</td></tr>
+            <tr><td>Motor control</td><td>60 A 4-in-1 ESC on AM32 firmware</td><td>Drives all four motors from one board</td></tr>
+            <tr><td>Power</td><td>4S LiPo packs</td><td>Main flight battery</td></tr>
+            <tr><td>Control link</td><td>2.4 GHz ExpressLRS receiver and handheld radio</td><td>Manual control and flight-mode switching</td></tr>
+            <tr><td>Telemetry</td><td>915 MHz telemetry radio</td><td>Live data and mission uploads to Mission Planner on a laptop</td></tr>
+            <tr><td>Recovery</td><td>DShot beacon (motors beep) instead of a separate buzzer</td><td>Helps locate the drone if it goes down, with one less part to carry</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption class="label">System architecture</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>I had to solder the receiver to the flight controller, which went great! Everything is working the way it's supposed to, and power is flowing to every part of the system.</p>
+    </div>
+
+    <!-- PHOTO PLACEHOLDER: replace this whole <figure> with:
+         <figure class="media">
+           <img src="images/quad-photo-2.jpg" alt="Describe the photo" loading="lazy">
+           <figcaption class="label">Fig. 2 &middot; Caption</figcaption>
+         </figure> -->
+    <figure class="media media-placeholder">
+      <div class="ph label">Photo coming</div>
+      <figcaption class="label">Fig. 2</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>Right now, I'm calibrating all the sensors and tuning everything in Mission Planner to get it ready for its first flight. Once it's flying, the goal is for it to fly waypoint missions planned on a map, hold its position with GPS, and fly itself home and land if something goes wrong.</p>
+      <p>I'm also designing the frame at the same time. I'm building it in SolidWorks around 7-inch propellers, with room for the flight controller, GPS, receiver, and telemetry radio on one stack. I'll be 3D printing it in ASA, which handles heat and sunlight much better than PLA.</p>
+      <p>This page will grow as the build does.</p>
     </div>
   </section>
 

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Copper Antenna FDM Fabrication · Mikail Naqib</title>
+<meta name="description" content="Setting up a 3D printer to print antennas from copper filament for antenna manufacturing research, by Mikail Naqib.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js"></script>
+</head>
+<body>
+<div class="wrap detail">
+
+  <div class="topbar">
+    <div class="theme-switch" role="group" aria-label="Color theme">
+      <button type="button" data-mode="system" aria-pressed="false" aria-label="System theme" title="System"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="9"/><path d="M5.5 14.5h5M8 11.5v3"/></svg></button>
+      <button type="button" data-mode="light" aria-pressed="false" aria-label="Light theme" title="Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3"/></svg></button>
+      <button type="button" data-mode="dark" aria-pressed="false" aria-label="Dark theme" title="Dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13.5 9.5A6 6 0 0 1 6.5 2.5a6 6 0 1 0 7 7z"/></svg></button>
+    </div>
+    <a class="back" href="index.html#projects">&larr; Portfolio</a>
+  </div>
+
+  <!-- ============ TITLE BLOCK ============ -->
+  <header class="titleblock stacked">
+    <div class="tb-main">
+      <span class="label">Mahbub Lab Work · No. 01</span>
+      <h1>Copper Antenna FDM Fabrication</h1>
+      <div class="tb-role">3D printing antennas out of copper for antenna manufacturing research</div>
+    </div>
+    <div class="tb-cells">
+      <div class="tb-cell"><span class="label">Role</span><span class="v">Fabrication + printer setup</span></div>
+      <div class="tb-cell"><span class="label">Printer</span><span class="v">Elegoo Neptune 4</span></div>
+      <div class="tb-cell"><span class="label">Material</span><span class="v">Copper filament</span></div>
+      <div class="tb-cell"><span class="label">Timeline</span><span class="v">Sep 2026 – ongoing</span></div>
+    </div>
+  </header>
+
+  <!-- ============ PROJECT WRITE-UP ============
+       To edit: change the text inside each <p>...</p>. -->
+  <section class="story">
+    <div class="sec-head"><span class="label">A</span><h2>Printing With Copper</h2></div>
+    <div class="prose">
+      <p>This project started with the <a href="research-drone.html">research drone</a>. While I was using the lab's 3D printer to print the drone's electronics housings, Mr. Nayan &ndash; another PhD student in the lab &ndash; asked if I knew how to use 3D printers. He's writing a paper on low-cost antenna manufacturing and wants to explore how well 3D-printed antennas actually work, so he asked me to help set up the lab's Elegoo Neptune 4 to print with copper filament from The Virtual Foundry.</p>
+      <p>That filament needs a specific setup, including the company's special filament prewarmer, and the spool was too big to fit on the printer's stock filament holder. So I designed a holder in SolidWorks that sits on top of the printer and holds both the spool and the prewarmer in place.</p>
+    </div>
+
+    <div class="media media-pair">
+      <figure><img src="images/cu-holder-1.jpg" alt="The 3D-printed holder mounted on top of the printer frame, with a spool arm and the filament prewarmer" width="900" height="1200" loading="lazy"></figure>
+      <figure><img src="images/cu-holder-2.jpg" alt="The holder from another angle, showing the spool arm and the prewarmer passing through it" width="900" height="1200" loading="lazy"></figure>
+      <p class="label media-cap">Fig. 1 &middot; The holder I designed for the copper spool and filament prewarmer</p>
+    </div>
+
+    <div class="prose">
+      <p>Next, I set up the custom G-code profile recommended by The Virtual Foundry and got to printing.</p>
+    </div>
+
+    <div class="media media-pair">
+      <figure><img src="images/cu-printer.jpg" alt="The Elegoo Neptune 4 printing with a spool of copper filament mounted in the holder above it" width="900" height="1200" loading="lazy"></figure>
+      <figure><img src="images/cu-printing.jpg" alt="Close-up of the print head laying down the first layers of a copper-colored part" width="900" height="1200" loading="lazy"></figure>
+      <p class="label media-cap">Fig. 2 &middot; The printer set up and printing with copper filament</p>
+    </div>
+
+    <div class="prose">
+      <p>The result was our first copper antenna. It hasn't been sintered yet, so right now it's a &ldquo;green&rdquo; part: copper powder held together by a plastic binder. Firing it in our kiln will burn off the binder and fuse the copper into a solid part.</p>
+    </div>
+
+    <figure class="media media-portrait">
+      <img src="images/cu-antenna.jpg" alt="The unsintered copper antenna print, a brown plate with a grid of small posts, a central bar, and mounting holes" width="900" height="900" loading="lazy">
+      <figcaption class="label">Fig. 3 &middot; The unsintered copper antenna</figcaption>
+    </figure>
+
+    <div class="media media-pair">
+      <figure><img src="images/cu-vs-pla-1.jpg" alt="The copper antenna print next to the same design printed in white PLA, seen at an angle" width="900" height="900" loading="lazy"></figure>
+      <figure><img src="images/cu-vs-pla-2.jpg" alt="The copper and PLA antenna prints side by side, seen from above" width="900" height="900" loading="lazy"></figure>
+      <p class="label media-cap">Fig. 4 &middot; The copper print next to the same antenna printed in normal PLA</p>
+    </div>
+
+    <div class="prose">
+      <p>After that first print, though, I started running into issue after issue. First the brittle filament kept snapping, and then the nozzle kept clogging. We've ordered a new extruder and nozzle combination, so hopefully once those come in, the Elegoo will be back in working order. Even if that doesn't work, though, the professor wants to try utilizing a better printer, so I'll have to make a setup for that one anyway.</p>
+      <p>We're also starting to look into electroplating. The idea is to print antennas out of conductive PLA, which is much, much easier to handle than the copper filament, and then electroplate them. I've been researching it with Mr. Nayan, and once our supplies come in, we'll get to electroplating with another PhD student he works with. Mr. Nayan will also have an antenna made by an actual metal 3D printing lab.</p>
+      <p>Once all three antennas are ready, we'll compare the copper-printed and electroplated antennas against professionally manufactured ones. For now, we're waiting on the conductive filament, the electroplating supplies, and the new printer hardware, so this page will grow as the project does.</p>
+    </div>
+  </section>
+
+  <nav class="pager" aria-label="More projects">
+    <a href="mahbub-lab.html"><span class="label">Back to folder</span><strong>&larr; Mahbub Lab Work</strong></a>
+    <a href="research-drone.html"><span class="label">Next</span><strong>Research Drone Payload Upgrade &rarr;</strong></a>
+  </nav>
+
+</div>
+</body>
+</html>

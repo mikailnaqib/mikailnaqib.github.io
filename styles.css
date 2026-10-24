@@ -140,7 +140,7 @@ footer{margin-top:var(--s5);display:flex;justify-content:space-between;flex-wrap
 }
 @media (prefers-reduced-motion:no-preference){
   .sheet{transition:transform .2s ease,box-shadow .2s ease}
-  .sheet:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--accent)}
+  a.sheet:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--accent)}
 }
 
 /* ---------- Clickable project sheets ---------- */
@@ -258,3 +258,9 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
 .media-model model-viewer{display:block;width:100%;height:min(70vh,520px);border:1.5px solid var(--ink);background:var(--sheet);--poster-color:transparent}
 .media-model .hint{color:var(--ink-2)}
 @media (max-width:760px){.media-model model-viewer{height:360px}}
+
+/* ---------- Clickable cards pop up when scrolled to the middle of the screen (see site.js),
+   and still pop up on mouse-over. Cards that don't link anywhere stay flat. ---------- */
+a.sheet{transition:transform .25s ease,box-shadow .25s ease}
+a.sheet.in-view{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--accent)}
+@media (hover:none){a.sheet:hover:not(.in-view){transform:none;box-shadow:none}}

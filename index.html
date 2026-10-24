@@ -35,7 +35,7 @@ const PORTFOLIO = {
 
   experience: [
     {
-      title: "Vice President", org: "AIAA UTD", when: "Dec 2025 – Aug 2026",
+      title: "Vice President", org: "AIAA UTD (American Institute of Aeronautics and Astronautics at UT Dallas)", when: "Dec 2025 – Aug 2026",
       points: [
         "Co-led ~250 members across 10 research projects and 3 international competition teams",
         "Secured funding, facilities, and resources through partnerships with university administration and industry, including support from RTX"
@@ -96,7 +96,7 @@ const PORTFOLIO = {
     {
       title: "Autonomous Quadcopter", kind: "Independent project", when: "Jul 2026 – present",
       image: "", figure: "quad", link: "quadcopter.html",
-      text: "A 7-inch quadcopter built from the frame up. I designed the airframe in SolidWorks and printed it in ASA, then integrated the flight controller, GPS, telemetry and power system and configured it in ArduCopter for autonomous flight.",
+      text: "A 7-inch quadcopter built from the frame up. I'm designing the airframe in SolidWorks to print in ASA, and I've integrated the flight controller, GPS, telemetry, and power system, which I'm now setting up in ArduCopter for autonomous flight.",
       specs: [["Role","Design, build, tuning"],["Tools","SolidWorks · ArduPilot"],["Capability","Waypoints · GPS hold · RTL failsafe"]]
     },
     {
@@ -301,7 +301,7 @@ const contact = `
       ${P.contact.map(([k,v,href],i)=>`<div class="row"><span class="k">${esc(k)}</span>${href?`<a href="${esc(href)}" target="_blank" rel="noopener">${esc(v)}</a>`:`<span id="c${i}">${esc(v)}</span>`}${(!href || /^(https?:|mailto:)/.test(href)) ? `<button class="copy" type="button" data-v="${esc(/^https?:/.test(href) ? href : v)}">Copy</button>` : ""}</div>`).join("")}
     </div>
   </div>
-  <footer><span class="label">Rev. Oct 2026</span><span class="label">${esc(P.name.preferred)} ${esc(P.name.last)}</span></footer>
+  <footer><span class="label">Rev. Oct 2026</span><span class="label">${esc(P.name.first)} ${esc(P.name.preferred)} ${esc(P.name.last)}</span></footer>
 </section>`;
 
 document.getElementById("app").innerHTML = header + experience + projects + skills + contact;
