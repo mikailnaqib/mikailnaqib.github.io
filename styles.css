@@ -17,8 +17,8 @@
 
   /* ===== Scroll background: edit these to tune the look =====
      (line wear and plant spacing are set at the top of background.js) */
-  --card:85;      /* how solid the cards are: 100 = fully solid, lower = more see-through */
-  --art-k:.6;     /* strength of the drawn lines (wings, birds, plants): 0 to 1 */
+  --card:70;      /* how solid the cards are: 100 = fully solid, lower = more see-through */
+  --art-k:.8;     /* strength of the drawn lines (wings, birds, plants): 0 to 1 */
   --tex-k:.8;     /* strength of the stone texture and its veins: 0 = off, 1 = full */
   --art:rgba(22,32,44,.27); --art-soft:rgba(22,32,44,.14); --art-accent:rgba(85,0,0,.5);   /* ink colors of the drawings */
   --tex:url(images/stone-light.webp); --tex-op:.75;   /* light-theme stone texture */
