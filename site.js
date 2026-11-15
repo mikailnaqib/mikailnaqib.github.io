@@ -7,7 +7,7 @@
    It appears on the front page at the start of every visit
    (not again when someone clicks around within the same visit). */
 var CONSTRUCTION_NOTICE = {
-  SHOW: true,
+  SHOW: false,
   label: "Notice · Work in progress",
   title: "Under construction",
   text: "Forewarning: this website is still being built. Some projects are missing details and photos, and pages may change as I add more of my work.",

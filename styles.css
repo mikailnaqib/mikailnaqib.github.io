@@ -1,4 +1,5 @@
-/* Layout: an engineering drawing sheet. Title block up top, each project is a numbered sheet with a figure frame and a spec table. */
+/* Layout: an engineering drawing sheet. Title block up top, each project is a numbered sheet with a figure frame and a spec table.
+   Behind it all: a stone surface with wings, birds and a wild garden that move as you scroll (drawn by background.js). */
 :root{
   --paper:#f3f5f7;
   --sheet:#fbfcfd;
@@ -13,20 +14,29 @@
   --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
   --s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;--s5:1.5rem;--s6:2rem;--s7:3rem;--s8:4.5rem;
+
+  /* ===== Scroll background: edit these to tune the look =====
+     (line wear and plant spacing are set at the top of background.js) */
+  --card:85;      /* how solid the cards are: 100 = fully solid, lower = more see-through */
+  --art-k:.6;     /* strength of the drawn lines (wings, birds, plants): 0 to 1 */
+  --tex-k:.8;     /* strength of the stone texture and its veins: 0 = off, 1 = full */
+  --art:rgba(22,32,44,.27); --art-soft:rgba(22,32,44,.14); --art-accent:rgba(85,0,0,.5);   /* ink colors of the drawings */
+  --tex:var(--tex-l); --wear:var(--wear-l); --tex-op:.75;   /* light-theme stone and wear tiles (made by background.js) */
 }
 /* The page's own toggle (data-site-theme) always wins. In System mode, follow the host's data-theme if set, else the OS. */
 @media (prefers-color-scheme:dark){:root:not([data-site-theme]):not([data-theme="light"]){
   --paper:#0e1a2a;--sheet:#13223a;--ink:#e6edf5;--ink-2:#9fb0c4;--line:#2c4160;--grid:rgba(160,190,230,.06);
-  --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;color-scheme:dark}}
+  --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;
+  --art:rgba(170,198,235,.30);--art-soft:rgba(170,198,235,.16);--art-accent:rgba(212,138,132,.6);--tex:var(--tex-d);--wear:var(--wear-d);--tex-op:.58;color-scheme:dark}}
 :root[data-site-theme="dark"],:root:not([data-site-theme])[data-theme="dark"]{
   --paper:#0e1a2a;--sheet:#13223a;--ink:#e6edf5;--ink-2:#9fb0c4;--line:#2c4160;--grid:rgba(160,190,230,.06);
-  --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;color-scheme:dark}
+  --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;
+  --art:rgba(170,198,235,.30);--art-soft:rgba(170,198,235,.16);--art-accent:rgba(212,138,132,.6);--tex:var(--tex-d);--wear:var(--wear-d);--tex-op:.58;color-scheme:dark}
 
 *{box-sizing:border-box}
 body{
+  position:relative;margin:0;
   background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.6;
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:24px 24px;
 }
 .wrap{max-width:1040px;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:72px var(--s8)}
 a{color:inherit}
@@ -45,7 +55,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margi
 .theme-switch svg{width:15px;height:15px;flex:none}
 
 /* ---------- Title block header ---------- */
-.titleblock{border:1.5px solid var(--ink);background:var(--sheet);display:grid;grid-template-columns:1fr auto}
+.titleblock{border:1.5px solid var(--ink);background:var(--sheet);background:color-mix(in srgb,var(--sheet) calc(var(--card)*1%),transparent);display:grid;grid-template-columns:1fr auto}
 .tb-main{padding:var(--s6) var(--s6) var(--s5);border-right:1.5px solid var(--ink);min-width:0}
 .tb-main h1{font-size:clamp(2.8rem,8vw,5.2rem);letter-spacing:-.01em;text-transform:uppercase}
 .tb-main h1 .first{color:var(--accent)}
@@ -83,7 +93,7 @@ ul.pts li::before{content:"";position:absolute;left:0;top:.68em;width:.55rem;hei
 
 /* Project sheets */
 .sheets{display:grid;gap:var(--s6)}
-.sheet{background:var(--sheet);border:1.5px solid var(--ink);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+.sheet{background:var(--sheet);background:color-mix(in srgb,var(--sheet) calc(var(--card)*1%),transparent);border:1.5px solid var(--ink);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
 .fig{border-right:1.5px solid var(--ink);position:relative;min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .fig img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
 .fig svg{width:78%;max-width:300px;height:auto}
@@ -112,7 +122,7 @@ ul.pts li::before{content:"";position:absolute;left:0;top:.68em;width:.55rem;hei
 h3.sub{font-size:1.3rem;text-transform:uppercase;margin-bottom:var(--s3)}
 
 /* Contact */
-.contact{background:var(--ink);color:var(--paper);padding:var(--s6);display:grid;grid-template-columns:1fr auto;gap:var(--s5);align-items:end}
+.contact{background:var(--ink);background:color-mix(in srgb,var(--ink) calc(70% + var(--card)*.3%),transparent);color:var(--paper);padding:var(--s6);display:grid;grid-template-columns:1fr auto;gap:var(--s5);align-items:end}
 .contact h2{font-size:clamp(2rem,5vw,3rem);text-transform:uppercase;color:var(--paper)}
 .contact p{margin:var(--s2) 0 0;max-width:46ch;opacity:.85}
 .contact .links{display:grid;gap:var(--s2);min-width:0}
@@ -146,8 +156,9 @@ footer{margin-top:var(--s5);display:flex;justify-content:space-between;flex-wrap
 /* ---------- Clickable project sheets ---------- */
 a.sheet{color:inherit;text-decoration:none}
 a.sheet:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-.more{display:inline-flex;align-items:center;gap:.4em;margin-top:var(--s4);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500}
-a.sheet:hover .more{text-decoration:underline;text-underline-offset:3px}
+.more{display:inline-block;margin-top:var(--s4);font-family:var(--font-mono);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:500;
+  text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+a.sheet:hover .more,a.sheet.in-view .more{text-decoration-thickness:3px}
 
 /* ---------- Project detail pages ---------- */
 .topbar{display:flex;align-items:center;gap:var(--s3)}
@@ -160,7 +171,7 @@ a.sheet:hover .more{text-decoration:underline;text-underline-offset:3px}
 .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}
 .gallery .fig{border:1.5px solid var(--ink);background:var(--sheet);aspect-ratio:4/3;min-height:0;max-width:100%}
 .gallery .fig svg{width:55%}
-.tablewrap{overflow-x:auto;border:1.5px solid var(--ink);background:var(--sheet)}
+.tablewrap{overflow-x:auto;border:1.5px solid var(--ink);background:var(--sheet);background:color-mix(in srgb,var(--sheet) calc(var(--card)*1%),transparent)}
 table.bom{border-collapse:collapse;width:100%;min-width:560px}
 table.bom th,table.bom td{text-align:left;padding:var(--s3) var(--s4);border-bottom:1px solid var(--line);vertical-align:top}
 table.bom tr:last-child td{border-bottom:none}
@@ -169,7 +180,7 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
 .todo{border:1.5px dashed var(--accent);padding:var(--s4) var(--s5);max-width:68ch;display:grid;gap:var(--s2);color:var(--ink-2)}
 .todo .label{color:var(--accent)}
 .todo ul{margin:0;padding-left:1.1rem;display:grid;gap:var(--s1)}
-.pager{margin-top:var(--s8);display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--ink);background:var(--sheet)}
+.pager{margin-top:var(--s8);display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--ink);background:var(--sheet);background:color-mix(in srgb,var(--sheet) calc(var(--card)*1%),transparent)}
 .pager a{padding:var(--s4) var(--s5);text-decoration:none;color:inherit;display:grid;gap:2px;min-width:0}
 .pager a + a{border-left:1.5px solid var(--ink);text-align:right}
 .pager a strong{font-family:var(--font-display);font-size:1.3rem;font-weight:600;text-transform:uppercase}
@@ -264,3 +275,24 @@ table.bom td:first-child{font-family:var(--font-mono);font-size:.8rem;white-spac
 a.sheet{transition:transform .25s ease,box-shadow .25s ease}
 a.sheet.in-view{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--accent)}
 @media (hover:none){a.sheet:hover:not(.in-view){transform:none;box-shadow:none}}
+
+/* ---------- Scroll background (the drawings themselves are made by background.js) ----------
+   Five layers sit behind the page content, back to front:
+   garden, wear over the garden, wings + birds, stone veins, stone texture. */
+.bg-layer,.bg-wear,.bg-texture{pointer-events:none;left:0;top:0;width:100%}
+.bg-layer{overflow:hidden}
+.bg-garden,.bg-veins,.bg-wear,.bg-texture{position:absolute;height:100%}
+.bg-wings{position:fixed;height:100vh;height:100lvh}
+.bg-garden{z-index:-5;opacity:var(--art-k)}
+.bg-wear{z-index:-4;background-image:var(--wear,none);background-size:512px 512px}
+.bg-wings{z-index:-3;opacity:var(--art-k);-webkit-mask-image:var(--wear-mask,none);mask-image:var(--wear-mask,none);-webkit-mask-size:512px 512px;mask-size:512px 512px}
+.bg-veins{z-index:-2;opacity:min(1,var(--tex-k))}
+.bg-texture{z-index:-1;background-image:var(--tex,none);background-size:512px 512px;opacity:calc(var(--tex-op)*var(--tex-k))}
+.bg-layer *{fill:none;stroke:var(--art);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.bg-layer .soft,.bg-layer .soft *{stroke:var(--art-soft)}
+.bg-layer .acc,.bg-layer .acc *{stroke:var(--art-accent)}
+.bg-layer .solid,.bg-layer .solid *{fill:var(--paper)}
+.bg-layer .hair{stroke-width:.8}
+.bg-layer .bird *{vector-effect:non-scaling-stroke}
+.bg-veins *{stroke:var(--art-soft)}
+@media print{.bg-layer,.bg-wear,.bg-texture{display:none}}
