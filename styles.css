@@ -21,17 +21,17 @@
   --art-k:.6;     /* strength of the drawn lines (wings, birds, plants): 0 to 1 */
   --tex-k:.8;     /* strength of the stone texture and its veins: 0 = off, 1 = full */
   --art:rgba(22,32,44,.27); --art-soft:rgba(22,32,44,.14); --art-accent:rgba(85,0,0,.5);   /* ink colors of the drawings */
-  --tex:var(--tex-l); --wear:var(--wear-l); --tex-op:.75;   /* light-theme stone and wear tiles (made by background.js) */
+  --tex:url(images/stone-light.webp); --tex-op:.75;   /* light-theme stone texture */
 }
 /* The page's own toggle (data-site-theme) always wins. In System mode, follow the host's data-theme if set, else the OS. */
 @media (prefers-color-scheme:dark){:root:not([data-site-theme]):not([data-theme="light"]){
   --paper:#0e1a2a;--sheet:#13223a;--ink:#e6edf5;--ink-2:#9fb0c4;--line:#2c4160;--grid:rgba(160,190,230,.06);
   --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;
-  --art:rgba(170,198,235,.30);--art-soft:rgba(170,198,235,.16);--art-accent:rgba(212,138,132,.6);--tex:var(--tex-d);--wear:var(--wear-d);--tex-op:.58;color-scheme:dark}}
+  --art:rgba(170,198,235,.30);--art-soft:rgba(170,198,235,.16);--art-accent:rgba(212,138,132,.6);--tex:url(images/stone-dark.webp);--tex-op:.58;color-scheme:dark}}
 :root[data-site-theme="dark"],:root:not([data-site-theme])[data-theme="dark"]{
   --paper:#0e1a2a;--sheet:#13223a;--ink:#e6edf5;--ink-2:#9fb0c4;--line:#2c4160;--grid:rgba(160,190,230,.06);
   --accent:#d48a84;--accent-ink:#13223a;--accent-on-ink:#550000;
-  --art:rgba(170,198,235,.30);--art-soft:rgba(170,198,235,.16);--art-accent:rgba(212,138,132,.6);--tex:var(--tex-d);--wear:var(--wear-d);--tex-op:.58;color-scheme:dark}
+  --art:rgba(170,198,235,.30);--art-soft:rgba(170,198,235,.16);--art-accent:rgba(212,138,132,.6);--tex:url(images/stone-dark.webp);--tex-op:.58;color-scheme:dark}
 
 *{box-sizing:border-box}
 body{
@@ -278,16 +278,19 @@ a.sheet.in-view{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--accent
 
 /* ---------- Scroll background (the drawings themselves are made by background.js) ----------
    Five layers sit behind the page content, back to front:
-   garden, wear over the garden, wings + birds, stone veins, stone texture. */
-.bg-layer,.bg-wear,.bg-texture{pointer-events:none;left:0;top:0;width:100%}
+   garden, wear over the garden, wings + birds (a canvas), stone veins, stone texture.
+   Every layer either stays still or only redraws a small area while scrolling, so the page scrolls smoothly. */
+.bg-layer,.bg-wear,.bg-texture,.bg-wings{pointer-events:none;left:0;top:0;width:100%}
 .bg-layer{overflow:hidden}
 .bg-garden,.bg-veins,.bg-wear,.bg-texture{position:absolute;height:100%}
 .bg-wings{position:fixed;height:100vh;height:100lvh}
 .bg-garden{z-index:-5;opacity:var(--art-k)}
-.bg-wear{z-index:-4;background-image:var(--wear,none);background-size:512px 512px}
-.bg-wings{z-index:-3;opacity:var(--art-k);-webkit-mask-image:var(--wear-mask,none);mask-image:var(--wear-mask,none);-webkit-mask-size:512px 512px;mask-size:512px 512px}
+.bg-wear{z-index:-4;background:var(--paper);-webkit-mask-image:url(images/wear.png);mask-image:url(images/wear.png);-webkit-mask-size:512px 512px;mask-size:512px 512px}
+.bg-wings{z-index:-3}
+/* fade each piece on its own: fading the whole full-screen layer would force an extra full-screen blend every frame */
+.bg-wings canvas{position:absolute;left:0;top:0;will-change:transform;transform-origin:0 0;opacity:var(--art-k)}
 .bg-veins{z-index:-2;opacity:min(1,var(--tex-k))}
-.bg-texture{z-index:-1;background-image:var(--tex,none);background-size:512px 512px;opacity:calc(var(--tex-op)*var(--tex-k))}
+.bg-texture{z-index:-1;background-image:var(--tex);background-size:512px 512px;opacity:calc(var(--tex-op)*var(--tex-k))}
 .bg-layer *{fill:none;stroke:var(--art);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 .bg-layer .soft,.bg-layer .soft *{stroke:var(--art-soft)}
 .bg-layer .acc,.bg-layer .acc *{stroke:var(--art-accent)}
@@ -295,4 +298,4 @@ a.sheet.in-view{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--accent
 .bg-layer .hair{stroke-width:.8}
 .bg-layer .bird *{vector-effect:non-scaling-stroke}
 .bg-veins *{stroke:var(--art-soft)}
-@media print{.bg-layer,.bg-wear,.bg-texture{display:none}}
+@media print{.bg-layer,.bg-wear,.bg-texture,.bg-wings{display:none}}

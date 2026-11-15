@@ -1,16 +1,14 @@
 /* The scroll-driven background on every page:
      - a pair of wings (with a flock of swallows above them) that stays in place and opens as you scroll
      - a wild garden of sprigs, ferns and flowers that grows in from the page edges as you reach it
-     - a stone surface with hairline veins
-   Everything is drawn by this file, so there are no image files to manage.
+     - a stone surface (images/stone-light.webp / stone-dark.webp) with hairline veins
    The look (colors and strengths) is set in styles.css under "Scroll background".
 
    ===== SETTINGS: edit here ===== */
 var BACKGROUND = {
   SHOW: true,          // false turns the whole background off
-  WEAR: 0.6,           // how worn/patchy the drawn lines are: 0 = clean lines, 1 = very worn
   PLANT_SPACING: 440,  // average distance down the page between plants (bigger = fewer plants)
-  PAPER: { light: "#f3f5f7", dark: "#0e1a2a" }   // must match --paper in styles.css (light and dark)
+  WEAR_IMAGE: "images/wear.png"   // the worn-ink pattern; set to "" for clean lines
 };
 
 (function(){
@@ -32,74 +30,173 @@ let W=0,H=0,DOCH=0;   // page width, screen height, full page height
 function featherD(L,w){
   return "M0 0C"+f(L*.25)+" "+f(-w)+" "+f(L*.86)+" "+f(-w*.9)+" "+f(L)+" 0C"+f(L*.86)+" "+f(w*.9)+" "+f(L*.25)+" "+f(w)+" 0 0Z";
 }
-function feather(parent,L,w,cls){
-  const g=$("g",{class:cls||"solid"},parent);
-  $("path",{d:featherD(L,w)},g);
-  $("path",{d:"M0 0L"+f(L*.95)+" 0",class:"hair soft"},g);
-  return g;
-}
-/* =========================== WINGS: fixed behind the page, open as you scroll =========================== */
-const wings={
-  build(svg){
-    svg.setAttribute("viewBox","0 0 "+W+" "+H);
-    const u=this.u=Math.min(W*0.5,800)/1.36;
-    /* loose feathers that drift down the page */
-    this.fall=[];const R=rng(11);
-    for(let i=0;i<9;i++){
-      const d=lerp(.45,1,R()),g=feather(svg,lerp(26,54,d),lerp(4,8,d),i%4===0?"acc solid":"solid");
-      this.fall.push({g,x:R()*W,y0:R()*(H+240),d,ph:R()*6.28});
-    }
-    const root=this.root=$("g",null,svg);
-    this.fe=[];this.bones=[];
-    const rows=[{n:17,l0:.27,l1:.58,w:.1,da:0},{n:14,l0:.16,l1:.28,w:.15,da:-8},{n:12,l0:.085,l1:.14,w:.2,da:-14}];
-    for(const side of [1,-1]){
-      const wg=$("g",{transform:"scale("+side+" 1)"},root);
-      rows.forEach(r=>{
-        for(let i=0;i<r.n;i++){           /* tip first, so inner feathers overlap outer ones */
-          const t=1-(i+.5)/r.n;
-          let L=u*lerp(r.l0,r.l1,t);if(t>.86)L*=1-(t-.86)*1.6;
-          this.fe.push({g:feather(wg,L,L*r.w),t,da:r.da});
-        }
-      });
-      this.bones.push($("path",{"stroke-width":1.6},wg));
-    }
-    /* a flock above the wings: each bird stays put but grows in, one after another, as you scroll */
-    this.birds=[];
-    const flock=[[0,.5,.15,0],[-27,.6,.115,.07],[25,.66,.125,.13],[-52,.55,.1,.19],[50,.52,.105,.25],[-10,.82,.095,.31],[14,.92,.08,.37],[-40,.82,.085,.43],[38,.8,.09,.49],[-66,.68,.075,.54],[64,.7,.075,.58]];
-    flock.forEach((b,i)=>{
-      const g=$("g",{class:i===0?"bird acc solid":"bird solid"},root),wl=$("g",null,g),wr=$("g",null,g);
-      for(const w of [wl,wr]){
-        $("path",{d:"M.06 -.32C.42 -.46 .8 -.22 1.1 .28C.78 .08 .46 .04 .06 .12Z"},w);
-        $("path",{d:"M.2 -.22C.48 -.22 .74 -.04 .96 .18M.18 -.06C.38 -.08 .56 -.02 .72 .06",class:"hair"},w);
-      }
-      $("path",{d:"M-.07 .28L-.22 .9L0 .58L.22 .9L.07 .28Z"},g);
-      $("path",{d:"M0 -.62L.05 -.5C.13 -.42 .15 -.1 .08 .26L0 .46L-.08 .26C-.15 -.1 -.13 -.42 -.05 -.5Z"},g);
-      this.birds.push({g,wl,wr,a:b[0]*.01745,r:b[1],s:Math.max(13,b[2]*u),t:b[3],head:b[0]*.75+(i%3-1)*7,k:-1});
+/* Paints the two wings into a 2D context. Self-contained on purpose: it is also copied into a
+   background worker thread, so the wings can be redrawn without ever holding up scrolling. */
+function paintWings(c,S,o){
+  const D=Math.PI/180,lp=(a,b,t)=>a+(b-a)*t,u=S.u,k=S.k,ox=S.box.w/2,oy=S.box.h*.6,C=S.col;
+  if(!S.paths)S.paths=S.fe.map(q=>({p:new Path2D(q.d),h:new Path2D(q.hd)}));
+  c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,c.canvas.width,c.canvas.height);c.lineCap=c.lineJoin="round";
+  const p1x=lp(.14,.42,o)*u,p1y=lp(-.24,-.38,o)*u,p2x=lp(.2,.9,o)*u,p2y=lp(.36,0,o)*u;
+  for(const side of [1,-1]){
+    S.fe.forEach((q,i)=>{
+      const t=q.t,x=2*(1-t)*t*p1x+t*t*p2x,yy=2*(1-t)*t*p1y+t*t*p2y,ang=lp(lp(93,80,t),lp(100,20,t),o)+q.da*o,P=S.paths[i];
+      c.setTransform(k*side,0,0,k,ox*k,oy*k);c.translate(x,yy);c.rotate(ang*D);
+      c.fillStyle=C.paper;c.fill(P.p);c.strokeStyle=C.ink;c.lineWidth=1.2;c.stroke(P.p);
+      c.strokeStyle=C.soft;c.lineWidth=.8;c.stroke(P.h);
     });
+    c.setTransform(k*side,0,0,k,ox*k,oy*k);
+    c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(p1x,p1y,p2x,p2y);c.strokeStyle=C.ink;c.lineWidth=1.6;c.stroke();
+  }
+  if(S.wear){   /* worn ink: knock out gaps, pinned to where the wings sit on screen */
+    if(!S.pat)S.pat=c.createPattern(S.wear,"repeat");
+    c.setTransform(k,0,0,k,0,0);c.translate(-S.wx,-S.wy);
+    c.globalCompositeOperation="destination-out";c.fillStyle=S.pat;c.fillRect(S.wx,S.wy,S.box.w,S.box.h);
+    c.globalCompositeOperation="source-over";
+  }
+}
+/* the background thread: holds the wings canvas and redraws it on request, always skipping to the newest request */
+const WING_WORKER="const paintWings="+paintWings.toString()+";\n"+
+  "let c=null,S=null,want=null,last=null,wear=null;"+
+  "function run(){if(want===null||!c||!S)return;const o=want;want=null;last=o;S.wx=o.wx;S.wy=o.wy;paintWings(c,S,o.o)}"+
+  "onmessage=e=>{const m=e.data;if(m.canvas)c=m.canvas.getContext('2d');if(m.S){S=m.S;S.wear=wear}if(m.wearUrl){fetch(m.wearUrl).then(r=>r.blob()).then(createImageBitmap).then(b=>{wear=b;if(S){S.wear=b;S.pat=null}if(want===null)want=last;run()}).catch(()=>{})}if(m.col&&S)S.col=m.col;"+
+  "if(m.o)want=m.o;else if(want===null)want=last;run()};";
+
+/* =========================== WINGS: fixed behind the page, open as you scroll ===========================
+   Built for smooth scrolling:
+   - the wings are drawn on a <canvas> that only redraws when their shape actually changes
+   - each bird and each drifting feather is drawn once into its own little canvas; scrolling only moves,
+     turns and scales those (a "transform"), which the graphics card does without repainting anything */
+const D2R=Math.PI/180;
+const BIRD={
+  wing:new Path2D("M.06 -.32C.42 -.46 .8 -.22 1.1 .28C.78 .08 .46 .04 .06 .12Z"),
+  wingHair:new Path2D("M.2 -.22C.48 -.22 .74 -.04 .96 .18M.18 -.06C.38 -.08 .56 -.02 .72 .06"),
+  tail:new Path2D("M-.07 .28L-.22 .9L0 .58L.22 .9L.07 .28Z"),
+  body:new Path2D("M0 -.62L.05 -.5C.13 -.42 .15 -.1 .08 .26L0 .46L-.08 .26C-.15 -.1 -.13 -.42 -.05 -.5Z")
+};
+const wings={
+  col:{},
+  colors(){
+    const cs=getComputedStyle(document.documentElement),g=k=>cs.getPropertyValue(k).trim();
+    this.col={ink:g("--art"),soft:g("--art-soft"),acc:g("--art-accent"),paper:g("--paper")};
+  },
+  /* fill + outline + hairline of one shape, in the context's current transform */
+  shape(c,p,h,ink,lw){
+    c.fillStyle=this.col.paper;c.fill(p);
+    c.strokeStyle=ink;c.lineWidth=lw;c.stroke(p);
+    if(h){c.strokeStyle=ink===this.col.acc?ink:this.col.soft;c.lineWidth=lw*.67;c.stroke(h)}
+  },
+  /* knock the worn-ink gaps out of a canvas; ox/oy shift the pattern so every sprite wears differently */
+  weather(c,w,h,ox,oy,scale){
+    const img=this.wear;if(!img||!img.complete||!img.naturalWidth)return;
+    const pat=c.createPattern(img,"repeat");
+    c.save();const k=scale||this.dpr;c.setTransform(k,0,0,k,0,0);c.translate(-ox,-oy);
+    c.globalCompositeOperation="destination-out";c.fillStyle=pat;c.fillRect(ox,oy,w,h);c.restore();
+  },
+  build(host,wear){
+    this.host=host;this.wear=wear;this.colors();
+    const dpr=this.dpr=Math.min(1.5,window.devicePixelRatio||1);
+    const u=this.u=Math.min(W*0.5,800)/1.36,mkF=(L,w)=>({L,w,p:new Path2D(featherD(L,w)),h:new Path2D("M0 0L"+f(L*.95)+" 0")});
+    /* the wings' own canvas only covers the area the wings can reach */
+    this.box={w:Math.ceil(u*2.1),h:Math.ceil(u*1.25)};
+    host.textContent="";
+    const cv=this.cv=document.createElement("canvas");cv.className="bg-wingart";host.appendChild(cv);
+    const wd=Math.min(1,dpr);   // the wings are faint, soft lines: normal resolution is plenty and redraws faster
+    cv.style.width=this.box.w+"px";cv.style.height=this.box.h+"px";
+    this.lastKey="";
+    this.fe=[];
+    const rows=[{n:17,l0:.27,l1:.58,w:.1,da:0},{n:14,l0:.16,l1:.28,w:.15,da:-8},{n:12,l0:.085,l1:.14,w:.2,da:-14}];
+    rows.forEach(r=>{
+      for(let i=0;i<r.n;i++){           /* tip first, so inner feathers overlap outer ones */
+        const t=1-(i+.5)/r.n;
+        let L=u*lerp(r.l0,r.l1,t);if(t>.86)L*=1-(t-.86)*1.6;
+        this.fe.push({d:featherD(L,L*r.w),hd:"M0 0L"+f(L*.95)+" 0",t,da:r.da});
+      }
+    });
+    this.S={u,k:wd,box:this.box,fe:this.fe,col:this.col,wear:null};
+    this.useWorker(cv,Math.round(this.box.w*wd),Math.round(this.box.h*wd));
+    /* drifting feathers and the flock: one small canvas each */
+    const R=rng(11),sprite=(w,h)=>{const c=document.createElement("canvas");c.className="bg-sprite";c.width=Math.ceil(w*dpr);c.height=Math.ceil(h*dpr);c.style.width=w+"px";c.style.height=h+"px";host.appendChild(c);return c};
+    this.fall=[];
+    for(let i=0;i<9;i++){
+      const d=lerp(.45,1,R()),q=Object.assign(mkF(lerp(26,54,d),lerp(4,8,d)),{acc:i%4===0,x:R()*W,y0:R()*(H+240),d,ph:R()*6.28,ox:R()*512,oy:R()*512});
+      q.cv=sprite(q.L+6,q.w*2+6);this.fall.push(q);
+    }
+    const flock=[[0,.5,.15,0],[-27,.6,.115,.07],[25,.66,.125,.13],[-52,.55,.1,.19],[50,.52,.105,.25],[-10,.82,.095,.31],[14,.92,.08,.37],[-40,.82,.085,.43],[38,.8,.09,.49],[-66,.68,.075,.54],[64,.7,.075,.58]];
+    this.birds=flock.map((b,i)=>{
+      const s=Math.max(13,b[2]*u),bd={acc:i===0,a:b[0]*D2R,r:b[1],s,t:b[3],head:b[0]*.75+(i%3-1)*7,ox:R()*512,oy:R()*512,vis:null};
+      bd.cv=sprite(s*2.4,s*1.7);return bd;
+    });
+    this.paintSprites();
+  },
+  /* draw every bird and drifting feather once (again only when the theme changes) */
+  paintSprites(){
+    const dpr=this.dpr,C=this.col;
+    for(const q of this.fall){
+      const c=q.cv.getContext("2d"),w=q.L+6,h=q.w*2+6;
+      c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,q.cv.width,q.cv.height);c.lineCap=c.lineJoin="round";
+      c.setTransform(dpr,0,0,dpr,3*dpr,(q.w+3)*dpr);this.shape(c,q.p,q.h,q.acc?C.acc:C.ink,1.2);
+      this.weather(c,w,h,q.ox,q.oy);
+    }
+    for(const b of this.birds){
+      const c=b.cv.getContext("2d"),s=b.s,w=s*2.4,h=s*1.7,ink=b.acc?C.acc:C.ink,lw=1.2/s;
+      c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,b.cv.width,b.cv.height);c.lineCap=c.lineJoin="round";
+      for(const sx of [1,-1]){
+        c.setTransform(dpr*s*sx,0,0,dpr*s,w/2*dpr,s*.66*dpr);
+        c.fillStyle=C.paper;c.fill(BIRD.wing);c.strokeStyle=ink;c.lineWidth=lw;c.stroke(BIRD.wing);c.lineWidth=lw*.67;c.stroke(BIRD.wingHair);
+      }
+      c.setTransform(dpr*s,0,0,dpr*s,w/2*dpr,s*.66*dpr);
+      for(const pth of [BIRD.tail,BIRD.body]){c.fillStyle=C.paper;c.fill(pth);c.strokeStyle=ink;c.lineWidth=lw;c.stroke(pth)}
+      this.weather(c,w,h,b.ox,b.oy);
+    }
+    this.lastKey="";
+  },
+  recolor(){this.colors();this.paintSprites();this.S.col=this.col;if(this.worker)this.worker.postMessage({col:this.col})},
+  /* hand the wings canvas to the background thread if the browser can; otherwise draw it here */
+  useWorker(cv,w,h){
+    this.ctx=null;
+    if(cv.transferControlToOffscreen&&window.Worker&&window.Blob){
+      try{
+        if(!this.worker)this.worker=new Worker(URL.createObjectURL(new Blob([WING_WORKER],{type:"text/javascript"})));
+        const off=cv.transferControlToOffscreen();off.width=w;off.height=h;
+        const S=Object.assign({},this.S,{wear:null,paths:null,pat:null});
+        this.worker.postMessage({canvas:off,S},[off]);
+        this.sendWear();return;
+      }catch(e){this.worker=null}
+    }
+    cv.width=w;cv.height=h;this.ctx=cv.getContext("2d");this.S.wear=this.wear&&this.wear.complete?this.wear:null;
+  },
+  sendWear(){
+    const img=this.wear;if(!img||!img.complete||!img.naturalWidth)return;
+    if(this.worker){if(!this.wearSent){this.wearSent=true;this.worker.postMessage({wearUrl:new URL(CFG.WEAR_IMAGE,location.href).href})}}
+    else{this.S.wear=img;this.S.pat=null;this.lastKey=""}
   },
   render(p,y){
-    const u=this.u,o=lerp(.2,1,ease(p*1.2));
-    this.root.setAttribute("transform","translate("+f(W/2)+" "+f(H*lerp(.6,.47,ease(p)))+")");
-    const p1x=lerp(.14,.42,o)*u,p1y=lerp(-.24,-.38,o)*u,p2x=lerp(.2,.9,o)*u,p2y=lerp(.36,.0,o)*u;
-    for(const q of this.fe){
-      const t=q.t,x=2*(1-t)*t*p1x+t*t*p2x,yy=2*(1-t)*t*p1y+t*t*p2y;
-      const ang=lerp(lerp(93,80,t),lerp(100,20,t),o)+q.da*o;
-      q.g.setAttribute("transform","translate("+f(x)+" "+f(yy)+")rotate("+f(ang)+")");
+    if(!this.S)return;
+    const u=this.u,dpr=this.dpr,C=this.col,e=ease(p),o=lerp(.2,1,ease(p*1.2));
+    const cx=W/2,cy=H*lerp(.6,.47,e),bx=cx-this.box.w/2,by=cy-this.box.h*.6;
+    /* the wings: move their canvas with a transform; redraw only when the opening has changed visibly */
+    this.cv.style.transform="translate3d("+f(bx)+"px,"+f(by)+"px,0)";
+    const key=Math.round(o*120);   // about 100 redraws across the whole page
+    if(key!==this.lastKey){
+      this.lastKey=key;
+      const req={o,wx:bx,wy:by};
+      if(this.worker)this.worker.postMessage({o:req});
+      else if(this.ctx){this.S.wx=bx;this.S.wy=by;paintWings(this.ctx,this.S,o)}
     }
-    const d="M0 0Q"+f(p1x)+" "+f(p1y)+" "+f(p2x)+" "+f(p2y);
-    this.bones[0].setAttribute("d",d);this.bones[1].setAttribute("d",d);
+    /* the flock grows in; flapping is a quick horizontal squeeze of each bird */
     this.birds.forEach((b,i)=>{
-      const k=Math.round(ease((p-b.t)/.3)*100)/100,fl=f(.78+.22*Math.sin(y*.02+i*1.7));
-      b.wr.setAttribute("transform","scale("+fl+" 1)");b.wl.setAttribute("transform","scale(-"+fl+" 1)");
-      if(k===b.k)return;b.k=k;
-      const r=u*b.r*(.6+.4*k);
-      b.g.setAttribute("transform","translate("+f(Math.sin(b.a)*r)+" "+f(-Math.cos(b.a)*r)+")rotate("+f(b.head)+")scale("+f(k*b.s)+")");
-      b.g.style.visibility=k>0?"visible":"hidden";
+      const k=ease((p-b.t)/.3),st=b.cv.style;
+      if(k<=0){if(b.vis!==false){st.visibility="hidden";b.vis=false}return}
+      if(b.vis!==true){st.visibility="visible";b.vis=true}
+      const fl=.78+.22*Math.sin(y*.02+i*1.7),r=u*b.r*(.6+.4*k),s=b.s;
+      const x=cx+Math.sin(b.a)*r,yy=cy-Math.cos(b.a)*r;
+      st.transform="translate3d("+f(x)+"px,"+f(yy)+"px,0)rotate("+f(b.head)+"deg)scale("+f(k*fl*100)/100+","+f(k*100)/100+")translate("+f(-s*1.2)+"px,"+f(-s*.66)+"px)";
     });
+    /* drifting feathers */
     const span=H+240;
     for(const q of this.fall){
       const yy=((q.y0+y*.32*q.d)%span+span)%span-120,xx=q.x+Math.sin(y*.003+q.ph)*46*q.d;
-      q.g.setAttribute("transform","translate("+f(xx)+" "+f(yy)+")rotate("+f(72+Math.sin(y*.004+q.ph)*42)+")");
+      q.cv.style.transform="translate3d("+f(xx)+"px,"+f(yy)+"px,0)rotate("+f(72+Math.sin(y*.004+q.ph)*42)+"deg)translate(-3px,"+f(-(q.w+3))+"px)";
     }
   }
 };
@@ -218,26 +315,7 @@ const garden={
   }
 };
 
-/* =========================== STONE: marbled, pitted, flecked rock laid over the drawings, plus hairline veins =========================== */
-function stoneTile(dark){
-  const k=dark?"0 0 0 0 1 0 0 0 0 1 0 0 0 0 1":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-  const mottle=k+" -1.5 0 0 0 .5",fleck=k+" 5 0 0 0 -3.05";
-  const relief=k+(dark?" 1.9 0 0 0 -1.6":" -1.9 0 0 0 1.62");
-  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">'+
-    '<filter id="m" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512" color-interpolation-filters="sRGB">'+
-      '<feTurbulence type="turbulence" baseFrequency=".0065 .008" numOctaves="6" seed="'+(dark?6:3)+'" stitchTiles="stitch"/><feColorMatrix type="matrix" values="'+mottle+'"/></filter>'+
-    '<filter id="r" filterUnits="userSpaceOnUse" x="-64" y="-64" width="640" height="640" color-interpolation-filters="sRGB">'+
-      '<feTurbulence type="turbulence" baseFrequency=".032" numOctaves="5" seed="'+(dark?9:4)+'" stitchTiles="stitch" x="0" y="0" width="512" height="512"/><feTile/>'+
-      '<feDiffuseLighting surfaceScale="1.9" diffuseConstant="1" lighting-color="#fff"><feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>'+
-      '<feColorMatrix type="matrix" values="'+relief+'"/></filter>'+
-    '<filter id="s" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512" color-interpolation-filters="sRGB">'+
-      '<feTurbulence type="fractalNoise" baseFrequency=".83 .91" numOctaves="3" seed="11" stitchTiles="stitch"/><feColorMatrix type="matrix" values="'+fleck+'"/></filter>'+
-    '<rect width="512" height="512" filter="url(#m)" opacity=".5"/>'+
-    '<rect x="-64" y="-64" width="640" height="640" filter="url(#r)" opacity=".55"/>'+
-    '<rect width="512" height="512" filter="url(#s)" opacity=".35"/></svg>';
-  return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
-}
-
+/* =========================== VEINS: hairline veins that wander across the stone; they run the length of the page and never repeat */
 /* hairline veins that wander across the stone; they run the length of the page and never repeat */
 const veins={
   build(svg){
@@ -261,37 +339,16 @@ const veins={
   render(){}
 };
 
-/* =========================== WEAR: gaps, faded patches and fine pitting in the drawn lines ===========================
-   Three layers of noise multiplied together. With no color it is a mask (used on the wings);
-   with a color it is a tile of stone-colored blotches laid over the garden, which looks the same. */
-function wearTile(w,color){
-  const m=v=>"0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 "+v;
-  let paint="";
-  if(color){
-    const c=[1,3,5].map(i=>(parseInt(color.slice(i,i+2),16)/255).toFixed(3));
-    paint='<feColorMatrix type="matrix" values="0 0 0 0 '+c[0]+" 0 0 0 0 "+c[1]+" 0 0 0 0 "+c[2]+' 0 0 0 -1 1"/>';
-  }
-  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">'+
-    '<filter id="w" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512" color-interpolation-filters="sRGB">'+
-      '<feTurbulence type="fractalNoise" baseFrequency=".021 .027" numOctaves="3" seed="3" stitchTiles="stitch"/><feColorMatrix type="matrix" values="'+m("25 0 0 0 "+(-25*(.25+.12*w)).toFixed(2))+'" result="gaps"/>'+
-      '<feTurbulence type="fractalNoise" baseFrequency=".0055" numOctaves="2" seed="8" stitchTiles="stitch"/><feColorMatrix type="matrix" values="'+m((3*w).toFixed(2)+" 0 0 0 "+(1-1.5*w).toFixed(2))+'" result="fade"/>'+
-      '<feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="1" seed="5" stitchTiles="stitch"/><feColorMatrix type="matrix" values="'+m("10 0 0 0 "+(-10*(.2+.1*w)).toFixed(2))+'" result="pits"/>'+
-      '<feComposite in="gaps" in2="fade" operator="in"/><feComposite in2="pits" operator="in"/>'+paint+'</filter>'+
-    '<rect width="512" height="512" filter="url(#w)"/></svg>';
-  return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
-}
-
 /* =========================== engine =========================== */
 function start(){
   const root=document.documentElement,body=document.body,wrap=document.querySelector(".wrap")||body;
-  const set=(k,v)=>root.style.setProperty(k,v);
-  set("--tex-l",stoneTile(false));set("--tex-d",stoneTile(true));
-  const wear=Math.max(0,Math.min(1,+CFG.WEAR||0));
-  if(wear>0){set("--wear-mask",wearTile(wear));set("--wear-l",wearTile(wear,CFG.PAPER.light));set("--wear-d",wearTile(wear,CFG.PAPER.dark))}
+  let wear=null;
+  if(CFG.WEAR_IMAGE){wear=new Image();wear.src=CFG.WEAR_IMAGE;wear.onload=()=>{if(wings.S){wings.paintSprites();wings.sendWear();draw()}}}
 
   /* the layers, back to front (their stacking order is set in styles.css) */
-  const mk=(svg,cls)=>{const e=svg?document.createElementNS(NS,"svg"):document.createElement("div");e.setAttribute("class",cls);e.setAttribute("aria-hidden","true");body.appendChild(e);return e};
-  const elGarden=mk(true,"bg-layer bg-garden"),elWear=mk(false,"bg-wear"),elWings=mk(true,"bg-layer bg-wings"),elVeins=mk(true,"bg-layer bg-veins"),elTex=mk(false,"bg-texture");
+  const mk=(tag,cls)=>{const e=tag==="svg"?document.createElementNS(NS,"svg"):document.createElement(tag);e.setAttribute("class",cls);e.setAttribute("aria-hidden","true");body.appendChild(e);return e};
+  const elGarden=mk("svg","bg-layer bg-garden"),elWear=mk("div","bg-wear"),elWings=mk("div","bg-wings"),elVeins=mk("svg","bg-layer bg-veins"),elTex=mk("div","bg-texture");
+  if(!CFG.WEAR_IMAGE)elWear.hidden=true;
 
   let ys=window.scrollY,raf=0,wingsKey="",pageKey="";
   function draw(){
@@ -299,15 +356,15 @@ function start(){
     wings.render(p,y);garden.render(p,y);
   }
   function tick(){
-    raf=0;const t=window.scrollY;ys+=(t-ys)*.14;if(Math.abs(t-ys)<.4)ys=t;
+    raf=0;const t=window.scrollY;ys+=(t-ys)*.18;if(Math.abs(t-ys)<.5)ys=t;
     draw();if(ys!==t)raf=requestAnimationFrame(tick);
   }
   function kick(){if(reduce)return;if(!raf)raf=requestAnimationFrame(tick)}
   function build(){
     W=root.clientWidth;H=elWings.getBoundingClientRect().height||window.innerHeight;
     DOCH=Math.ceil(Math.max(H,wrap.offsetTop+wrap.offsetHeight));
-    const wk=W+"x"+Math.round(H),pk=W+"x"+DOCH;
-    if(wk!==wingsKey){wingsKey=wk;elWings.textContent="";wings.build(elWings)}
+    const wk=W+"x"+Math.round(H)+"x"+(window.devicePixelRatio||1),pk=W+"x"+DOCH;
+    if(wk!==wingsKey){wingsKey=wk;wings.build(elWings,wear)}
     if(pk!==pageKey){
       pageKey=pk;
       elGarden.textContent="";garden.build(elGarden);
@@ -316,6 +373,11 @@ function start(){
     }
     ys=window.scrollY;draw();
   }
+  /* redraw the canvas in the new ink colors when the light/dark theme changes */
+  const recolor=()=>{wings.recolor();draw()};
+  new MutationObserver(recolor).observe(root,{attributes:true,attributeFilter:["data-site-theme","data-theme"]});
+  if(window.matchMedia){const mq=matchMedia("(prefers-color-scheme: dark)");mq.addEventListener?mq.addEventListener("change",recolor):mq.addListener(recolor)}
+
   window.addEventListener("scroll",kick,{passive:true});
   let rt=0;
   function resized(){clearTimeout(rt);rt=setTimeout(build,150)}
